@@ -22,7 +22,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "\"user\"")
 public class UserModel extends GenericModel {
 
     @Column(nullable = false, length = 20, unique = true)
@@ -32,7 +32,7 @@ public class UserModel extends GenericModel {
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"), uniqueConstraints = {
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"), uniqueConstraints = {
             @UniqueConstraint(columnNames = { "user_id", "role_id" }) })
     private List<RoleModel> roles;
 
