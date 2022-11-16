@@ -8,6 +8,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 import com.example.demo.model.GenericModel;
 
 @NoRepositoryBean
-public interface IGenericRepository<T extends GenericModel, ID extends Serializable> extends JpaRepository<T, ID> {
+public interface IGenericRepository<T extends GenericModel, I extends Serializable> extends JpaRepository<T, I> {
 
 }

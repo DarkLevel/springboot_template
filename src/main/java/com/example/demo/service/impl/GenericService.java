@@ -15,17 +15,17 @@ import com.example.demo.exception.GenericException;
 import com.example.demo.model.GenericModel;
 import com.example.demo.service.IGenericService;
 
-public abstract class GenericService<T extends GenericModel, ID extends Serializable>
-        implements IGenericService<T, ID> {
+public abstract class GenericService<T extends GenericModel, I extends Serializable>
+        implements IGenericService<T, I> {
 
     @Autowired
-    private IGenericDao<T, ID> genericDao;
+    private IGenericDao<T, I> genericDao;
 
     @Override
     @Transactional(rollbackOn = GenericException.class)
-    public Optional<T> get(ID id) throws GenericException {
+    public Optional<T> get(I i) throws GenericException {
         try {
-            return genericDao.get(id);
+            return genericDao.get(i);
         } catch (Exception e) {
             throw new GenericException(e.getMessage(), e, 500);
         }
@@ -33,9 +33,9 @@ public abstract class GenericService<T extends GenericModel, ID extends Serializ
 
     @Override
     @Transactional(rollbackOn = GenericException.class)
-    public Collection<T> get(Collection<ID> lId) throws GenericException {
+    public Collection<T> get(Collection<I> lI) throws GenericException {
         try {
-            return genericDao.get(lId);
+            return genericDao.get(lI);
         } catch (Exception e) {
             throw new GenericException(e.getMessage(), e, 500);
         }
@@ -64,9 +64,9 @@ public abstract class GenericService<T extends GenericModel, ID extends Serializ
 
     @Override
     @Transactional(rollbackOn = GenericException.class)
-    public T update(ID id, T t) throws GenericException {
+    public T update(I i, T t) throws GenericException {
         try {
-            t.setId((Long) id);
+            t.setId((Long) i);
             return genericDao.save(t);
         } catch (Exception e) {
             throw new GenericException(e.getMessage(), e, 500);
@@ -75,9 +75,9 @@ public abstract class GenericService<T extends GenericModel, ID extends Serializ
 
     @Override
     @Transactional(rollbackOn = GenericException.class)
-    public Collection<T> disable(Collection<ID> lId) throws GenericException {
+    public Collection<T> disable(Collection<I> lI) throws GenericException {
         try {
-            return changeStatus(lId, true);
+            return changeStatus(lI, true);
         } catch (Exception e) {
             throw new GenericException(e.getMessage(), e, 500);
         }
@@ -85,9 +85,9 @@ public abstract class GenericService<T extends GenericModel, ID extends Serializ
 
     @Override
     @Transactional(rollbackOn = GenericException.class)
-    public Collection<T> enable(Collection<ID> lId) throws GenericException {
+    public Collection<T> enable(Collection<I> lI) throws GenericException {
         try {
-            return changeStatus(lId, false);
+            return changeStatus(lI, false);
         } catch (Exception e) {
             throw new GenericException(e.getMessage(), e, 500);
         }
@@ -95,9 +95,9 @@ public abstract class GenericService<T extends GenericModel, ID extends Serializ
 
     @Override
     @Transactional(rollbackOn = GenericException.class)
-    public int delete(ID id) throws GenericException {
+    public int delete(I i) throws GenericException {
         try {
-            genericDao.delete(id);
+            genericDao.delete(i);
             return 1;
         } catch (Exception e) {
             throw new GenericException(e.getMessage(), e, 500);
@@ -106,21 +106,25 @@ public abstract class GenericService<T extends GenericModel, ID extends Serializ
 
     @Override
     @Transactional(rollbackOn = GenericException.class)
-    public int delete(Collection<ID> lId) throws GenericException {
+    public int delete(Collection<I> lI) throws GenericException {
         try {
-            lId.removeAll(Collections.singleton(null));
-            genericDao.delete(lId);
-            return lId.size();
+            lI.removeAll(Collections.singleton(null));
+            genericDao.delete(lI);
+            return lI.size();
         } catch (Exception e) {
             throw new GenericException(e.getMessage(), e, 500);
         }
     }
 
-    private Collection<T> changeStatus(Collection<ID> lId, boolean disabled) {
+    private Collection<T> changeStatus(Collection<I> lI, boolean disabled) {
         Collection<T> lT = new ArrayList<>();
+        Optional<T> t;
 
-        for (ID id : lId) {
-            lT.add(genericDao.get(id).get());
+        for (I i : lI) {
+            t = genericDao.get(i);
+            if (t.isPresent()) {
+                lT.add(t.get());
+            }
         }
 
         lT.stream().forEach(el -> el.setDisabled(disabled));

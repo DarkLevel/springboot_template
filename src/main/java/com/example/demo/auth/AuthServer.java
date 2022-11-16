@@ -2,6 +2,7 @@ package com.example.demo.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +26,9 @@ public class AuthServer extends AuthorizationServerConfigurerAdapter {
     @Qualifier("authenticationManager")
     private AuthenticationManager authenticationManager;
 
+    @Value("${password.example}")
+    private String password;
+
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.tokenKeyAccess("permitAll()")
@@ -34,7 +38,7 @@ public class AuthServer extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory().withClient("restclient")
-                .secret(passwordEncoder.encode("springboot"))
+                .secret(passwordEncoder.encode(password))
                 .scopes("read", "write")
                 .authorizedGrantTypes("password", "refresh_token")
                 .accessTokenValiditySeconds(60 * 60)
@@ -55,8 +59,7 @@ public class AuthServer extends AuthorizationServerConfigurerAdapter {
 
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
-        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
-        return jwtAccessTokenConverter;
+        return new JwtAccessTokenConverter();
     }
 
 }

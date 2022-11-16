@@ -20,8 +20,8 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
     protected S service;
 
     @Override
-    public ResponseEntity<?> get(Long id) {
-        ResponseEntity<?> responseEntity;
+    public ResponseEntity<Object> get(Long id) {
+        ResponseEntity<Object> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(service.get(id));
@@ -33,8 +33,8 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
     }
 
     @Override
-    public ResponseEntity<?> get(Collection<Long> id) {
-        ResponseEntity<?> responseEntity;
+    public ResponseEntity<Object> get(Collection<Long> id) {
+        ResponseEntity<Object> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(service.get(id));
@@ -46,8 +46,8 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
     }
 
     @Override
-    public ResponseEntity<?> create(T t) {
-        ResponseEntity<?> responseEntity;
+    public ResponseEntity<Object> create(T t) {
+        ResponseEntity<Object> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(service.create(t));
@@ -59,8 +59,8 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
     }
 
     @Override
-    public ResponseEntity<?> create(Collection<T> lT) {
-        ResponseEntity<?> responseEntity;
+    public ResponseEntity<Object> create(Collection<T> lT) {
+        ResponseEntity<Object> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(service.create(lT));
@@ -72,8 +72,8 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
     }
 
     @Override
-    public ResponseEntity<?> update(Long id, T t) {
-        ResponseEntity<?> responseEntity;
+    public ResponseEntity<Object> update(Long id, T t) {
+        ResponseEntity<Object> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(service.update(id, t));
@@ -85,8 +85,8 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
     }
 
     @Override
-    public ResponseEntity<?> disable(Collection<Long> lId) {
-        ResponseEntity<?> responseEntity;
+    public ResponseEntity<Object> disable(Collection<Long> lId) {
+        ResponseEntity<Object> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(service.disable(lId));
@@ -98,8 +98,8 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
     }
 
     @Override
-    public ResponseEntity<?> enable(Collection<Long> lId) {
-        ResponseEntity<?> responseEntity;
+    public ResponseEntity<Object> enable(Collection<Long> lId) {
+        ResponseEntity<Object> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(service.enable(lId));
@@ -111,8 +111,8 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
     }
 
     @Override
-    public ResponseEntity<?> delete(Long id) {
-        ResponseEntity<?> responseEntity;
+    public ResponseEntity<Object> delete(Long id) {
+        ResponseEntity<Object> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(service.delete(id));
@@ -124,8 +124,8 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
     }
 
     @Override
-    public ResponseEntity<?> delete(Collection<Long> lId) {
-        ResponseEntity<?> responseEntity;
+    public ResponseEntity<Object> delete(Collection<Long> lId) {
+        ResponseEntity<Object> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(service.delete(lId));

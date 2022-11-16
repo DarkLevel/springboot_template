@@ -15,33 +15,33 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.model.GenericModel;
 
-public interface IGenericController<T extends GenericModel, ID extends Serializable> {
+public interface IGenericController<T extends GenericModel, I extends Serializable> {
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> get(@PathVariable(required = true) ID id);
+	public ResponseEntity<Object> get(@PathVariable(required = true) I i);
 
 	@GetMapping
-	public ResponseEntity<?> get(@RequestParam(required = false) Collection<ID> id);
+	public ResponseEntity<Object> get(@RequestParam(required = false) Collection<I> i);
 
 	@PostMapping
-	public ResponseEntity<?> create(@RequestBody(required = true) T t);
+	public ResponseEntity<Object> create(@RequestBody(required = true) T t);
 
 	@PostMapping("/multiple")
-	public ResponseEntity<?> create(@RequestBody(required = true) Collection<T> lT);
+	public ResponseEntity<Object> create(@RequestBody(required = true) Collection<T> lT);
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@PathVariable(required = true) ID id, @RequestBody(required = true) T t);
+	public ResponseEntity<Object> update(@PathVariable(required = true) I i, @RequestBody(required = true) T t);
 
 	@PatchMapping("/disable")
-	public ResponseEntity<?> disable(@RequestBody(required = true) Collection<ID> lId);
+	public ResponseEntity<Object> disable(@RequestBody(required = true) Collection<I> lI);
 
 	@PatchMapping("/enable")
-	public ResponseEntity<?> enable(@RequestBody(required = true) Collection<ID> lId);
+	public ResponseEntity<Object> enable(@RequestBody(required = true) Collection<I> lI);
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable(required = true) ID id);
+	public ResponseEntity<Object> delete(@PathVariable(required = true) I i);
 
 	@DeleteMapping
-	public ResponseEntity<?> delete(@RequestBody(required = true) Collection<ID> lId);
+	public ResponseEntity<Object> delete(@RequestBody(required = true) Collection<I> lI);
 
 }

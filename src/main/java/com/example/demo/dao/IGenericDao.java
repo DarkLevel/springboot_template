@@ -6,18 +6,18 @@ import java.util.Optional;
 
 import com.example.demo.model.GenericModel;
 
-public interface IGenericDao<T extends GenericModel, ID extends Serializable> {
+public interface IGenericDao<T extends GenericModel, I extends Serializable> {
 
-    public Optional<T> get(ID id);
+    public Optional<T> get(I i);
 
-    public Collection<T> get(Collection<ID> lId);
+    public Collection<T> get(Collection<I> lI);
 
     public T save(T t);
 
     public Collection<T> save(Collection<T> lT);
 
-    public void delete(ID id);
+    public void delete(I i);
 
-    public void delete(Collection<ID> lId);
+    public void delete(Collection<I> lI);
 
 }

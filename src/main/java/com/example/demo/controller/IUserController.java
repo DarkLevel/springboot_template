@@ -9,6 +9,6 @@ import com.example.demo.model.UserModel;
 public interface IUserController extends IGenericController<UserModel, Long> {
 
     @GetMapping("/username/{username}")
-    public ResponseEntity<?> get(@PathVariable(required = true) String username);
+    public ResponseEntity<Object> get(@PathVariable(required = true) String username);
 
 }

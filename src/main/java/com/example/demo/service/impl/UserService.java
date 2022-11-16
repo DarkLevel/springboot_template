@@ -41,8 +41,9 @@ public class UserService extends GenericService<UserModel, Long> implements IUse
         List<GrantedAuthority> authorities = userModel.getRoles()
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .peek(authority -> log.info("Role: " + authority.getAuthority()))
                 .collect(Collectors.toList());
+
+        authorities.forEach(authority -> log.info("Role: ".concat(authority.getAuthority())));
 
         return new User(userModel.getUsername(), userModel.getPassword(), !userModel.isDisabled(), true, true, true,
                 authorities);

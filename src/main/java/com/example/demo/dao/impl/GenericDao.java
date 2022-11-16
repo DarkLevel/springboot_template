@@ -10,20 +10,20 @@ import com.example.demo.dao.IGenericDao;
 import com.example.demo.model.GenericModel;
 import com.example.demo.repository.IGenericRepository;
 
-public abstract class GenericDao<T extends GenericModel, ID extends Serializable>
-        implements IGenericDao<T, ID> {
+public abstract class GenericDao<T extends GenericModel, I extends Serializable>
+        implements IGenericDao<T, I> {
 
     @Autowired
-    private IGenericRepository<T, ID> genericRepository;
+    private IGenericRepository<T, I> genericRepository;
 
     @Override
-    public Optional<T> get(ID id) {
-        return genericRepository.findById(id);
+    public Optional<T> get(I i) {
+        return genericRepository.findById(i);
     }
 
     @Override
-    public Collection<T> get(Collection<ID> lId) {
-        return lId != null && !lId.isEmpty() ? genericRepository.findAllById(lId) : genericRepository.findAll();
+    public Collection<T> get(Collection<I> lI) {
+        return lI != null && !lI.isEmpty() ? genericRepository.findAllById(lI) : genericRepository.findAll();
     }
 
     @Override
@@ -37,14 +37,14 @@ public abstract class GenericDao<T extends GenericModel, ID extends Serializable
     }
 
     @Override
-    public void delete(ID id) {
-        genericRepository.deleteById(id);
+    public void delete(I i) {
+        genericRepository.deleteById(i);
     }
 
     @Override
-    public void delete(Collection<ID> lId) {
-        for (ID id : lId) {
-            genericRepository.deleteById(id);
+    public void delete(Collection<I> lI) {
+        for (I i : lI) {
+            genericRepository.deleteById(i);
         }
     }
 

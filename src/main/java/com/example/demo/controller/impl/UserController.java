@@ -20,8 +20,8 @@ public class UserController extends GenericController<UserModel, UserService>
     protected UserService userService;
 
     @Override
-    public ResponseEntity<?> get(String username) {
-        ResponseEntity<?> responseEntity;
+    public ResponseEntity<Object> get(String username) {
+        ResponseEntity<Object> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(userService.getByUsername(username));
