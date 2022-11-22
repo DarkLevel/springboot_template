@@ -9,6 +9,7 @@ import com.example.demo.controller.IUserController;
 import com.example.demo.exception.GenericException;
 import com.example.demo.model.UserModel;
 import com.example.demo.service.impl.UserService;
+import com.example.demo.utils.ResponseObject;
 import com.example.demo.utils.ResponseUtils;
 
 @RestController
@@ -20,8 +21,8 @@ public class UserController extends GenericController<UserModel, UserService>
     protected UserService userService;
 
     @Override
-    public ResponseEntity<Object> get(String username) {
-        ResponseEntity<Object> responseEntity;
+    public ResponseEntity<ResponseObject> get(String username) {
+        ResponseEntity<ResponseObject> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(userService.getByUsername(username));

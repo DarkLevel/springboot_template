@@ -10,6 +10,7 @@ import com.example.demo.controller.IGenericController;
 import com.example.demo.exception.GenericException;
 import com.example.demo.model.GenericModel;
 import com.example.demo.service.impl.GenericService;
+import com.example.demo.utils.ResponseObject;
 import com.example.demo.utils.ResponseUtils;
 
 @CrossOrigin
@@ -20,8 +21,8 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
     protected S service;
 
     @Override
-    public ResponseEntity<Object> get(Long id) {
-        ResponseEntity<Object> responseEntity;
+    public ResponseEntity<ResponseObject> get(Long id) {
+        ResponseEntity<ResponseObject> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(service.get(id));
@@ -33,8 +34,8 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
     }
 
     @Override
-    public ResponseEntity<Object> get(Collection<Long> id) {
-        ResponseEntity<Object> responseEntity;
+    public ResponseEntity<ResponseObject> get(Collection<Long> id) {
+        ResponseEntity<ResponseObject> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(service.get(id));
@@ -46,8 +47,8 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
     }
 
     @Override
-    public ResponseEntity<Object> create(T t) {
-        ResponseEntity<Object> responseEntity;
+    public ResponseEntity<ResponseObject> create(T t) {
+        ResponseEntity<ResponseObject> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(service.create(t));
@@ -59,8 +60,8 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
     }
 
     @Override
-    public ResponseEntity<Object> create(Collection<T> lT) {
-        ResponseEntity<Object> responseEntity;
+    public ResponseEntity<ResponseObject> create(Collection<T> lT) {
+        ResponseEntity<ResponseObject> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(service.create(lT));
@@ -72,8 +73,8 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
     }
 
     @Override
-    public ResponseEntity<Object> update(Long id, T t) {
-        ResponseEntity<Object> responseEntity;
+    public ResponseEntity<ResponseObject> update(Long id, T t) {
+        ResponseEntity<ResponseObject> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(service.update(id, t));
@@ -85,8 +86,8 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
     }
 
     @Override
-    public ResponseEntity<Object> disable(Collection<Long> lId) {
-        ResponseEntity<Object> responseEntity;
+    public ResponseEntity<ResponseObject> disable(Collection<Long> lId) {
+        ResponseEntity<ResponseObject> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(service.disable(lId));
@@ -98,8 +99,8 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
     }
 
     @Override
-    public ResponseEntity<Object> enable(Collection<Long> lId) {
-        ResponseEntity<Object> responseEntity;
+    public ResponseEntity<ResponseObject> enable(Collection<Long> lId) {
+        ResponseEntity<ResponseObject> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(service.enable(lId));
@@ -111,8 +112,8 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
     }
 
     @Override
-    public ResponseEntity<Object> delete(Long id) {
-        ResponseEntity<Object> responseEntity;
+    public ResponseEntity<ResponseObject> delete(Long id) {
+        ResponseEntity<ResponseObject> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(service.delete(id));
@@ -124,8 +125,8 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
     }
 
     @Override
-    public ResponseEntity<Object> delete(Collection<Long> lId) {
-        ResponseEntity<Object> responseEntity;
+    public ResponseEntity<ResponseObject> delete(Collection<Long> lId) {
+        ResponseEntity<ResponseObject> responseEntity;
 
         try {
             responseEntity = ResponseUtils.getResponseEntity(service.delete(lId));
