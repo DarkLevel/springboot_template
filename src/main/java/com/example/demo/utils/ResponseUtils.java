@@ -19,8 +19,8 @@ public class ResponseUtils {
         return getResponseEntityObject(genericException.getCode(), genericException.getLocalizedMessage());
     }
 
-    private static ResponseEntity<ResponseObject> getResponseEntityObject(int httpStatusCode, Object object) {
-        return ResponseEntity.status(HttpStatus.valueOf(httpStatusCode)).body(new ResponseObject(object));
+    private static ResponseEntity<ResponseObject> getResponseEntityObject(int status, Object object) {
+        return ResponseEntity.status(HttpStatus.valueOf(status)).body(new ResponseObject(status, object));
     }
 
 }
