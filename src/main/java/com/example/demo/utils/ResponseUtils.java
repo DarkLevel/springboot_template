@@ -11,16 +11,16 @@ public class ResponseUtils {
 
     }
 
-    public static <T> ResponseEntity<ResponseObject> getResponseEntity(T body) {
-        return getResponseEntityObject(200, body);
+    public static <T> ResponseEntity<ResponseObject> getResponseEntity(T t) {
+        return getResponseEntityObject(ResponseObject.create(200, t));
     }
 
-    public static ResponseEntity<ResponseObject> getResponseEntity(GenericException genericException) {
-        return getResponseEntityObject(genericException.getCode(), genericException.getLocalizedMessage());
+    public static ResponseEntity<ResponseObject> getResponseEntity(GenericException ge) {
+        return getResponseEntityObject(ResponseObject.create(ge.getCode(), ge.getLocalizedMessage()));
     }
 
-    private static ResponseEntity<ResponseObject> getResponseEntityObject(int status, Object object) {
-        return ResponseEntity.status(HttpStatus.valueOf(status)).body(new ResponseObject(status, object));
+    private static ResponseEntity<ResponseObject> getResponseEntityObject(ResponseObject responseObject) {
+        return ResponseEntity.status(HttpStatus.valueOf(responseObject.getStatus())).body(responseObject);
     }
 
 }
