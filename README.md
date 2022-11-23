@@ -1,11 +1,11 @@
 # springboot_rest_api_template
 
-CÓMO HACER LOGIN:
+## Execute these scripts in the database
 
-- URL: localhost:8080/api/oauth/token
-- BODY: x-www-form-urlencoded -> username: admin, password: springboot, grant_type: password
-- AUTHORIZATION: Type: Basic Auth -> Username: restclient, Password: springboot
+INSERT INTO "role" (disabled, name) VALUES (false, 'ADMIN_ROLE');
+INSERT INTO "user" (disabled, "password", username) VALUES (false, ${generated_password}, 'admin');
+INSERT INTO user_role (user_id, role_id) VALUES (1, 1);
 
-CÓMO USAR EL TOKEN:
+### Generated password
 
-- AUTHORIZATION: Type: Bearer Token -> Token: ${access_token}
+The password is generated in the console when the server is deployed
