@@ -14,22 +14,22 @@ public class ProjectApplication implements CommandLineRunner {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ProjectApplication.class);
 
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Value("${password.example}")
     private String password;
 
-	public static void main(String[] args) {
-		SpringApplication.run(ProjectApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ProjectApplication.class, args);
+    }
 
-	@Override
-	public void run(String... args) throws Exception {
+    @Override
+    public void run(String... args) throws Exception {
         String generatedPassword = passwordEncoder.encode(password);
         if (!StringUtils.isEmpty(generatedPassword)) {
             log.info(generatedPassword);
         }
-	}
+    }
 
 }
