@@ -15,7 +15,7 @@ public class ResponseObject {
     private Object data;
 
     private ResponseObject(int status, Object data) {
-        this.timestamp = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sssZ").format(new Date());
+        this.timestamp = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sssXXX").format(new Date());
         this.status = status;
         this.data = data;
     }
