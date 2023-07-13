@@ -8,16 +8,16 @@ import com.example.demo.model.GenericModel;
 
 public interface IGenericDao<T extends GenericModel, I extends Serializable> {
 
-    public Optional<T> get(I i);
+  public Optional<T> get(I i);
 
-    public Collection<T> get(Collection<I> lI);
+  public Collection<T> get(Collection<I> lI);
 
-    public T save(T t);
+  public T save(T t);
 
-    public Collection<T> save(Collection<T> lT);
+  public Collection<T> save(Collection<T> lT);
 
-    public void delete(I i);
+  public void delete(I i);
 
-    public void delete(Collection<I> lI);
+  public void delete(Collection<I> lI);
 
 }

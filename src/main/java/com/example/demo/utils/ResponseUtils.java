@@ -7,20 +7,20 @@ import com.example.demo.exception.GenericException;
 
 public class ResponseUtils {
 
-    private ResponseUtils() {
+  private ResponseUtils() {
 
-    }
+  }
 
-    public static <T> ResponseEntity<ResponseObject> getResponseEntity(T t) {
-        return getResponseEntityObject(ResponseObject.create(200, t));
-    }
+  public static <T> ResponseEntity<ResponseObject> getResponseEntity(T t) {
+    return getResponseEntityObject(ResponseObject.create(200, t));
+  }
 
-    public static ResponseEntity<ResponseObject> getResponseEntity(GenericException ge) {
-        return getResponseEntityObject(ResponseObject.create(ge.getCode(), ge.getLocalizedMessage()));
-    }
+  public static ResponseEntity<ResponseObject> getResponseEntity(GenericException ge) {
+    return getResponseEntityObject(ResponseObject.create(ge.getCode(), ge.getLocalizedMessage()));
+  }
 
-    private static ResponseEntity<ResponseObject> getResponseEntityObject(ResponseObject responseObject) {
-        return ResponseEntity.status(HttpStatus.valueOf(responseObject.getStatus())).body(responseObject);
-    }
+  private static ResponseEntity<ResponseObject> getResponseEntityObject(ResponseObject responseObject) {
+    return ResponseEntity.status(HttpStatus.valueOf(responseObject.getStatus())).body(responseObject);
+  }
 
 }

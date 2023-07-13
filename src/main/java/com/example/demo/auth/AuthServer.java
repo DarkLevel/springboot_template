@@ -19,47 +19,47 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @EnableAuthorizationServer
 public class AuthServer extends AuthorizationServerConfigurerAdapter {
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+  @Autowired
+  private BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
-    @Qualifier("authenticationManager")
-    private AuthenticationManager authenticationManager;
+  @Autowired
+  @Qualifier("authenticationManager")
+  private AuthenticationManager authenticationManager;
 
-    @Value("${password.example}")
-    private String password;
+  @Value("${password.example}")
+  private String password;
 
-    @Override
-    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security.tokenKeyAccess("permitAll()")
-                .checkTokenAccess("isAuthenticated()");
-    }
+  @Override
+  public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+    security.tokenKeyAccess("permitAll()")
+        .checkTokenAccess("isAuthenticated()");
+  }
 
-    @Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory().withClient("restclient")
-                .secret(passwordEncoder.encode(password))
-                .scopes("read", "write")
-                .authorizedGrantTypes("password", "refresh_token")
-                .accessTokenValiditySeconds(60 * 60)
-                .refreshTokenValiditySeconds(60 * 60);
-    }
+  @Override
+  public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+    clients.inMemory().withClient("restclient")
+        .secret(passwordEncoder.encode(password))
+        .scopes("read", "write")
+        .authorizedGrantTypes("password", "refresh_token")
+        .accessTokenValiditySeconds(60 * 60)
+        .refreshTokenValiditySeconds(60 * 60);
+  }
 
-    @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.authenticationManager(authenticationManager)
-                .tokenStore(tokenStore())
-                .accessTokenConverter(accessTokenConverter());
-    }
+  @Override
+  public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    endpoints.authenticationManager(authenticationManager)
+        .tokenStore(tokenStore())
+        .accessTokenConverter(accessTokenConverter());
+  }
 
-    @Bean
-    public JwtTokenStore tokenStore() {
-        return new JwtTokenStore(accessTokenConverter());
-    }
+  @Bean
+  public JwtTokenStore tokenStore() {
+    return new JwtTokenStore(accessTokenConverter());
+  }
 
-    @Bean
-    public JwtAccessTokenConverter accessTokenConverter() {
-        return new JwtAccessTokenConverter();
-    }
+  @Bean
+  public JwtAccessTokenConverter accessTokenConverter() {
+    return new JwtAccessTokenConverter();
+  }
 
 }

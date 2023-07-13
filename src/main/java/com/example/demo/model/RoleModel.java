@@ -17,7 +17,7 @@ import lombok.Setter;
 @Table(name = "role")
 public class RoleModel extends GenericModel {
 
-    @Column(nullable = false, length = 20)
-    private String name;
+  @Column(nullable = false, length = 20)
+  private String name;
 
 }

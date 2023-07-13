@@ -25,15 +25,15 @@ import lombok.Setter;
 @Table(name = "\"user\"")
 public class UserModel extends GenericModel {
 
-    @Column(nullable = false, length = 20, unique = true)
-    private String username;
+  @Column(nullable = false, length = 20, unique = true)
+  private String username;
 
-    @Column(nullable = false, length = 65)
-    private String password;
+  @Column(nullable = false, length = 65)
+  private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"), uniqueConstraints = {
-            @UniqueConstraint(columnNames = { "user_id", "role_id" }) })
-    private List<RoleModel> roles;
+  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"), uniqueConstraints = {
+      @UniqueConstraint(columnNames = { "user_id", "role_id" }) })
+  private List<RoleModel> roles;
 
 }

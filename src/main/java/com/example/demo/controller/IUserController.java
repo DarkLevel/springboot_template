@@ -9,7 +9,7 @@ import com.example.demo.utils.ResponseObject;
 
 public interface IUserController extends IGenericController<UserModel, Long> {
 
-    @GetMapping("/username/{username}")
-    public ResponseEntity<ResponseObject> get(@PathVariable(required = true) String username);
+  @GetMapping("/username/{username}")
+  public ResponseEntity<ResponseObject> get(@PathVariable(required = true) String username);
 
 }

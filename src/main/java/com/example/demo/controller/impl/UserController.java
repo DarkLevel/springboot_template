@@ -15,22 +15,22 @@ import com.example.demo.utils.ResponseUtils;
 @RestController
 @RequestMapping("/user")
 public class UserController extends GenericController<UserModel, UserService>
-        implements IUserController {
+    implements IUserController {
 
-    @Autowired
-    protected UserService userService;
+  @Autowired
+  protected UserService userService;
 
-    @Override
-    public ResponseEntity<ResponseObject> get(String username) {
-        ResponseEntity<ResponseObject> responseEntity;
+  @Override
+  public ResponseEntity<ResponseObject> get(String username) {
+    ResponseEntity<ResponseObject> responseEntity;
 
-        try {
-            responseEntity = ResponseUtils.getResponseEntity(userService.getByUsername(username));
-        } catch (GenericException e) {
-            responseEntity = ResponseUtils.getResponseEntity(e);
-        }
-
-        return responseEntity;
+    try {
+      responseEntity = ResponseUtils.getResponseEntity(userService.getByUsername(username));
+    } catch (GenericException e) {
+      responseEntity = ResponseUtils.getResponseEntity(e);
     }
+
+    return responseEntity;
+  }
 
 }

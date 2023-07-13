@@ -23,39 +23,39 @@ import com.example.demo.service.IUserService;
 @Service
 public class UserService extends GenericService<UserModel, Long> implements IUserService, UserDetailsService {
 
-    private static final Logger log = org.slf4j.LoggerFactory.getLogger(UserService.class);
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(UserService.class);
 
-    @Autowired
-    private IUserDao userDao;
+  @Autowired
+  private IUserDao userDao;
 
-    @Override
-    @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserModel userModel = this.userDao.findByUsername(username);
+  @Override
+  @Transactional
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    UserModel userModel = this.userDao.findByUsername(username);
 
-        if (userModel == null) {
-            log.error("The user doesn't exists");
-            throw new UsernameNotFoundException("The user doesn't exists");
-        }
-
-        List<GrantedAuthority> authorities = userModel.getRoles()
-                .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toList());
-
-        authorities.forEach(authority -> log.info("Role: ".concat(authority.getAuthority())));
-
-        return new User(userModel.getUsername(), userModel.getPassword(), !userModel.isDisabled(), true, true, true,
-                authorities);
+    if (userModel == null) {
+      log.error("The user doesn't exists");
+      throw new UsernameNotFoundException("The user doesn't exists");
     }
 
-    @Override
-    public UserModel getByUsername(String username) throws GenericException {
-        try {
-            return userDao.findByUsername(username);
-        } catch (Exception e) {
-            throw new GenericException(e.getMessage(), e, 500);
-        }
+    List<GrantedAuthority> authorities = userModel.getRoles()
+        .stream()
+        .map(role -> new SimpleGrantedAuthority(role.getName()))
+        .collect(Collectors.toList());
+
+    authorities.forEach(authority -> log.info("Role: ".concat(authority.getAuthority())));
+
+    return new User(userModel.getUsername(), userModel.getPassword(), !userModel.isDisabled(), true, true, true,
+        authorities);
+  }
+
+  @Override
+  public UserModel getByUsername(String username) throws GenericException {
+    try {
+      return userDao.findByUsername(username);
+    } catch (Exception e) {
+      throw new GenericException(e.getMessage(), e, 500);
     }
+  }
 
 }

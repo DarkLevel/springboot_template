@@ -10,6 +10,6 @@ import com.example.demo.service.impl.RoleService;
 @RestController
 @RequestMapping("/role")
 public class RoleController extends GenericController<RoleModel, RoleService>
-                implements IRoleController {
+    implements IRoleController {
 
 }
