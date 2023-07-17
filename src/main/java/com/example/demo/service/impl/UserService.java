@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,10 +19,11 @@ import com.example.demo.exception.GenericException;
 import com.example.demo.model.UserModel;
 import com.example.demo.service.IUserService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class UserService extends GenericService<UserModel, Long> implements IUserService, UserDetailsService {
-
-  private static final Logger log = org.slf4j.LoggerFactory.getLogger(UserService.class);
 
   @Autowired
   private IUserDao userDao;
