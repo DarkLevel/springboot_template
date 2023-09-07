@@ -20,12 +20,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class GenericModel implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(unique = true, nullable = false)
+  private Long id;
 
-    @Column(nullable = false, columnDefinition = "boolean default false")
-    private boolean disabled;
+  @Column(nullable = false, columnDefinition = "boolean default false")
+  private boolean disabled;
 
 }

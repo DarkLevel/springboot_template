@@ -20,7 +20,7 @@ public class ResponseUtils {
   }
 
   private static ResponseEntity<ResponseObject> getResponseEntityObject(ResponseObject responseObject) {
-    return ResponseEntity.status(HttpStatus.valueOf(responseObject.getStatus())).body(responseObject);
+    return ResponseEntity.status(HttpStatus.valueOf(responseObject.getMetadata().getStatus())).body(responseObject);
   }
 
 }

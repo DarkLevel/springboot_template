@@ -10,18 +10,16 @@ import lombok.Setter;
 @Setter
 public class ResponseObject {
 
-    private String timestamp;
-    private int status;
-    private Object data;
+  private Metadata metadata;
+  private Object data;
 
-    private ResponseObject(int status, Object data) {
-        this.timestamp = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sssXXX").format(new Date());
-        this.status = status;
-        this.data = data;
-    }
+  private ResponseObject(Metadata metadata, Object data) {
+    this.data = data;
+  }
 
-    public static ResponseObject create(int status, Object data) {
-        return new ResponseObject(status, data);
-    }
+  public static ResponseObject create(int status, Object data) {
+    return new ResponseObject(
+        new Metadata(status, new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sssXXX").format(new Date())), data);
+  }
 
 }

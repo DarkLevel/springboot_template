@@ -12,13 +12,13 @@ import com.example.demo.repository.IUserRepository;
 @Component
 public class UserDao extends GenericDao<UserModel, Long> implements IUserDao {
 
-    @Autowired
-    private IUserRepository userRepository;
+  @Autowired
+  private IUserRepository userRepository;
 
-    @Override
-    public UserModel findByUsername(String username) {
-        List<UserModel> lUserModel = userRepository.findByUsername(username);
-        return !lUserModel.isEmpty() ? lUserModel.get(0) : null;
-    }
+  @Override
+  public UserModel findByUsername(String username) {
+    List<UserModel> lUserModel = userRepository.findByUsername(username);
+    return !lUserModel.isEmpty() ? lUserModel.get(0) : null;
+  }
 
 }

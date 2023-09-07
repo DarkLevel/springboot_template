@@ -5,6 +5,6 @@ import com.example.demo.model.UserModel;
 
 public interface IUserService extends IGenericService<UserModel, Long> {
 
-    public UserModel getByUsername(String username) throws GenericException;
+  public UserModel getByUsername(String username) throws GenericException;
 
 }
