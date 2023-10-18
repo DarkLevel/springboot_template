@@ -1,12 +1,20 @@
 package com.example.demo.model;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,5 +35,23 @@ public class GenericModel implements Serializable {
 
   @Column(nullable = false, columnDefinition = "boolean default false")
   private boolean disabled;
+
+  @CreatedBy
+  @Column(name = "created_by", nullable = false, updatable = false)
+  private String createdBy;
+
+  @CreationTimestamp
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "Europe/Madrid")
+  @Column(name = "created_date", nullable = false, updatable = false)
+  private Instant createdDate;
+
+  @LastModifiedBy
+  @Column(name = "modified_by", insertable = false)
+  private String modifiedBy;
+
+  @UpdateTimestamp
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "Europe/Madrid")
+  @Column(name = "modified_date", insertable = false)
+  private Instant modifiedDate;
 
 }

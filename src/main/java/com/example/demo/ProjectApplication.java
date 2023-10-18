@@ -27,8 +27,9 @@ public class ProjectApplication implements CommandLineRunner {
   @Override
   public void run(String... args) throws Exception {
     String generatedPassword = passwordEncoder.encode(password);
+
     if (!StringUtils.isEmpty(generatedPassword)) {
-      log.info(generatedPassword);
+      log.info("'" + generatedPassword + "'");
     }
   }
 

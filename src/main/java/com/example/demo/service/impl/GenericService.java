@@ -116,20 +116,24 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
     }
   }
 
-  private Collection<T> changeStatus(Collection<I> lI, boolean disabled) {
-    Collection<T> lT = new ArrayList<>();
-    Optional<T> t;
+  private Collection<T> changeStatus(Collection<I> lI, boolean disabled) throws GenericException {
+    try {
+      Collection<T> lT = new ArrayList<>();
+      Optional<T> t;
 
-    for (I i : lI) {
-      t = genericDao.get(i);
-      if (t.isPresent()) {
-        lT.add(t.get());
+      for (I i : lI) {
+        t = genericDao.get(i);
+        if (t.isPresent()) {
+          lT.add(t.get());
+        }
       }
+
+      lT.stream().forEach(el -> el.setDisabled(disabled));
+
+      return genericDao.save(lT);
+    } catch (Exception e) {
+      throw new GenericException(e.getMessage(), e, 500);
     }
-
-    lT.stream().forEach(el -> el.setDisabled(disabled));
-
-    return genericDao.save(lT);
   }
 
 }
