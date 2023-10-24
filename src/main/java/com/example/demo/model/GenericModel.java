@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -30,6 +31,7 @@ public class GenericModel implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Size(min = 1)
   @Column(unique = true, nullable = false)
   private Long id;
 
@@ -37,7 +39,8 @@ public class GenericModel implements Serializable {
   private boolean disabled;
 
   @CreatedBy
-  @Column(name = "created_by", nullable = false, updatable = false)
+  @Size(max = 20)
+  @Column(name = "created_by", length = 20, nullable = false, updatable = false)
   private String createdBy;
 
   @CreationTimestamp
@@ -46,7 +49,8 @@ public class GenericModel implements Serializable {
   private Instant createdDate;
 
   @LastModifiedBy
-  @Column(name = "modified_by", insertable = false)
+  @Size(max = 20)
+  @Column(name = "modified_by", length = 20, insertable = false)
   private String modifiedBy;
 
   @UpdateTimestamp
