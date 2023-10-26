@@ -16,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dao.IRoleDao;
 import com.example.demo.dao.IUserDao;
 import com.example.demo.dao.IUserRoleDao;
 import com.example.demo.exception.GenericException;
@@ -39,9 +38,6 @@ public class UserService extends GenericService<UserModel, Long> implements IUse
   private IUserRoleDao userRoleDao;
 
   @Autowired
-  private IRoleDao roleDao;
-
-  @Autowired
   private IUserRoleService userRoleService;
 
   @Override
@@ -55,7 +51,6 @@ public class UserService extends GenericService<UserModel, Long> implements IUse
     }
 
     List<UserRoleModel> lUserRoleModel = userRoleDao.findByUserModel(userModel);
-    roleDao.get(lUserRoleModel.stream().map(e -> e.getRoleModel().getId()).toList());
 
     List<GrantedAuthority> authorities = lUserRoleModel
         .stream()

@@ -21,7 +21,7 @@ import lombok.Setter;
 @Table(name = "role")
 public class RoleModel extends GenericModel {
 
-  @Column(nullable = false, length = 20)
+  @Column(nullable = false, length = 20, unique = true)
   private String name;
 
   public RoleModel(Long id) {
