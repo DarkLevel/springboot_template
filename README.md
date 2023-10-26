@@ -8,8 +8,8 @@ INSERT INTO "user" ("disabled", "password", "username", "created_by", "created_d
 INSERT INTO "role" ("disabled", "name", "created_by", "created_date") VALUES (false, 'admin', 'admin', now());
 INSERT INTO "role" ("disabled", "name", "created_by", "created_date") VALUES (false, 'user', 'admin', now());
 
-INSERT INTO user_role ("user_id", "role_id") VALUES (1, 1);
-INSERT INTO user_role ("user_id", "role_id") VALUES (2, 2);
+INSERT INTO user_role ("disabled", "created_by", "created_date", "user_id", "role_id") VALUES (false, 'admin', now(), 1, 1);
+INSERT INTO user_role ("disabled", "created_by", "created_date", "user_id", "role_id") VALUES (false, 'admin', now(), 2, 2);
 
 ### Generated password
 

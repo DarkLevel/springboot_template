@@ -24,4 +24,8 @@ public class RoleModel extends GenericModel {
   @Column(nullable = false, length = 20)
   private String name;
 
+  public RoleModel(Long id) {
+    this.setId(id);
+  }
+
 }
