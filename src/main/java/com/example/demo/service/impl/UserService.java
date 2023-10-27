@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -52,12 +53,16 @@ public class UserService extends GenericService<UserModel, Long> implements IUse
 
     List<UserRoleModel> lUserRoleModel = userRoleDao.findByUserModel(userModel);
 
-    List<GrantedAuthority> authorities = lUserRoleModel
+    List<GrantedAuthority> authorities = new ArrayList<>();
+
+    if (lUserRoleModel != null && !lUserRoleModel.isEmpty()) {
+      authorities = lUserRoleModel
         .stream()
         .map(role -> new SimpleGrantedAuthority(role.getRoleModel().getName()))
         .collect(Collectors.toList());
 
-    authorities.forEach(authority -> log.info("Role: ".concat(authority.getAuthority())));
+      log.info("{\"given_roles\":[" + authorities.stream().map(e -> "\"" + e.getAuthority() + "\"").collect(Collectors.joining(", ")) + "]}");
+    }
 
     return new User(userModel.getUsername(), userModel.getPassword(), !userModel.isDisabled(), true, true, true,
         authorities);
