@@ -1,72 +1,28 @@
 package com.example.demo.service.impl;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.IUserDao;
-import com.example.demo.dao.IUserRoleDao;
 import com.example.demo.exception.GenericException;
-import com.example.demo.model.RoleModel;
 import com.example.demo.model.UserModel;
 import com.example.demo.model.UserRoleModel;
 import com.example.demo.service.IUserRoleService;
 import com.example.demo.service.IUserService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
-public class UserService extends GenericService<UserModel, Long> implements IUserService, UserDetailsService {
+public class UserService extends GenericService<UserModel, Long> implements IUserService {
 
   @Autowired
   private IUserDao userDao;
 
   @Autowired
-  private IUserRoleDao userRoleDao;
-
-  @Autowired
   private IUserRoleService userRoleService;
-
-  @Override
-  @Transactional
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    UserModel userModel = userDao.findByUsername(username);
-
-    if (userModel == null) {
-      log.error("The user doesn't exists");
-      throw new UsernameNotFoundException("The user doesn't exists");
-    }
-
-    List<UserRoleModel> lUserRoleModel = userRoleDao.findByUserModel(userModel);
-
-    List<GrantedAuthority> authorities = new ArrayList<>();
-
-    if (lUserRoleModel != null && !lUserRoleModel.isEmpty()) {
-      authorities = lUserRoleModel
-        .stream()
-        .map(role -> new SimpleGrantedAuthority(role.getRoleModel().getName()))
-        .collect(Collectors.toList());
-
-      log.info("{\"given_roles\":[" + authorities.stream().map(e -> "\"" + e.getAuthority() + "\"").collect(Collectors.joining(", ")) + "]}");
-    }
-
-    return new User(userModel.getUsername(), userModel.getPassword(), !userModel.isDisabled(), true, true, true,
-        authorities);
-  }
 
   @Override
   public UserModel getByUsername(String username) throws GenericException {
@@ -82,7 +38,7 @@ public class UserService extends GenericService<UserModel, Long> implements IUse
   public UserModel create(UserModel userModel) throws GenericException {
     try {
       UserModel createdUser = userDao.save(userModel);
-      userRoleService.create(new UserRoleModel(createdUser, new RoleModel(2L)));
+      userRoleService.create(new UserRoleModel(createdUser, 2L));
       return createdUser;
     } catch (Exception e) {
       throw new GenericException(e.getMessage(), e, 500);
@@ -95,7 +51,7 @@ public class UserService extends GenericService<UserModel, Long> implements IUse
     try {
       lUserModel.removeAll(Collections.singleton(null));
       Collection<UserModel> lCreatedUser = userDao.save(lUserModel);
-      userRoleService.create(lCreatedUser.stream().map(e -> new UserRoleModel(e, new RoleModel(2L))).toList());
+      userRoleService.create(lCreatedUser.stream().map(e -> new UserRoleModel(e, 2L)).toList());
       return lCreatedUser;
     } catch (Exception e) {
       throw new GenericException(e.getMessage(), e, 500);

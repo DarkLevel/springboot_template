@@ -31,4 +31,9 @@ public class UserRoleModel extends GenericModel {
   @JoinColumn(name = "role_id", nullable = false, updatable = false)
   private RoleModel roleModel;
 
+  public UserRoleModel(UserModel userModel, Long roleId) {
+    this.userModel = userModel;
+    this.roleModel = new RoleModel(roleId);
+  }
+
 }

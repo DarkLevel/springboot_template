@@ -77,7 +77,7 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
   @Transactional(rollbackOn = GenericException.class)
   public Collection<T> disable(Collection<I> lI) throws GenericException {
     try {
-      return changeStatus(lI, true);
+      return changeStatus(lI, false);
     } catch (Exception e) {
       throw new GenericException(e.getMessage(), e, 500);
     }
@@ -87,7 +87,7 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
   @Transactional(rollbackOn = GenericException.class)
   public Collection<T> enable(Collection<I> lI) throws GenericException {
     try {
-      return changeStatus(lI, false);
+      return changeStatus(lI, true);
     } catch (Exception e) {
       throw new GenericException(e.getMessage(), e, 500);
     }
@@ -116,7 +116,7 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
     }
   }
 
-  private Collection<T> changeStatus(Collection<I> lI, boolean disabled) throws GenericException {
+  private Collection<T> changeStatus(Collection<I> lI, boolean enabled) throws GenericException {
     try {
       Collection<T> lT = new ArrayList<>();
       Optional<T> t;
@@ -128,7 +128,7 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
         }
       }
 
-      lT.stream().forEach(el -> el.setDisabled(disabled));
+      lT.stream().forEach(el -> el.setEnabled(enabled));
 
       return genericDao.save(lT);
     } catch (Exception e) {
