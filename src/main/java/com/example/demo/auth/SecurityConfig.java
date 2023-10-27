@@ -1,7 +1,5 @@
 package com.example.demo.auth;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,14 +13,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.example.demo.service.impl.UserDetailsServiceImpl;
+import com.example.demo.service.impl.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
-  private UserDetailsServiceImpl userDetailsService;
+  private CustomUserDetailsService userDetailsService;
 
   @Bean
   BCryptPasswordEncoder passwordEncoder() {
@@ -43,17 +41,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   public void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests(
-        requests -> requests.antMatchers(HttpMethod.POST).hasAnyAuthority("admin").antMatchers(HttpMethod.PUT)
-            .hasAnyAuthority("admin").antMatchers(HttpMethod.PATCH).hasAnyAuthority("admin").antMatchers(HttpMethod.DELETE)
-            .hasAnyAuthority("admin").anyRequest().authenticated())
-        .csrf(withDefaults())
-        .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+      http.csrf(csrf -> csrf.disable()).authorizeRequests(
+              requests -> requests.mvcMatchers(HttpMethod.POST, "/role", "/user").hasAuthority("admin").mvcMatchers(HttpMethod.PUT, "/role", "/user")
+                      .hasAuthority("admin").mvcMatchers(HttpMethod.PATCH, "/role", "/user").hasAuthority("admin").mvcMatchers(HttpMethod.DELETE, "/role", "/user")
+                      .hasAuthority("admin").anyRequest().authenticated())
+              .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
   }
 
   @Override
   public void configure(final WebSecurity web) throws Exception {
-    web.ignoring().antMatchers("/configuration/**", "/swagger-ui/**", "/docs/**");
+    web.ignoring().mvcMatchers("/configuration/**", "/swagger-ui/**", "/docs/**");
   }
 
 }

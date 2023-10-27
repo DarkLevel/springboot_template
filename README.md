@@ -6,10 +6,10 @@ INSERT INTO "user" ("enabled", "password", "username", "created_by", "created_da
 INSERT INTO "user" ("enabled", "password", "username", "created_by", "created_date") VALUES (true, ${generated_password}, 'jroigdo', 'admin', now());
 
 INSERT INTO "role" ("enabled", "name", "created_by", "created_date") VALUES (true, 'admin', 'admin', now());
-INSERT INTO "role" ("enabled", "name", "created_by", "created_date") VALUES (true, 'user', 'admin', now());
+INSERT INTO "role" ("enabled", "name", "created_by", "created_date") VALUES (true, 'admin', 'admin', now());
 
-INSERT INTO user_role ("disabled", "created_by", "created_date", "user_id", "role_id") VALUES (false, 'admin', now(), 1, 1);
-INSERT INTO user_role ("disabled", "created_by", "created_date", "user_id", "role_id") VALUES (false, 'admin', now(), 2, 2);
+INSERT INTO user_role ("enabled", "created_by", "created_date", "user_id", "role_id") VALUES (true, 'admin', now(), 1, 1);
+INSERT INTO user_role ("enabled", "created_by", "created_date", "user_id", "role_id") VALUES (true, 'admin', now(), 2, 2);
 
 ### Generated password
 
