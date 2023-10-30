@@ -41,11 +41,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   public void configure(HttpSecurity http) throws Exception {
-    http.cors(cors -> cors.disable()).csrf(csrf -> csrf.disable()).authorizeRequests(
-        requests -> requests.mvcMatchers(HttpMethod.GET).hasAnyRole("ADMIN", "USER").mvcMatchers(HttpMethod.POST)
-            .hasAnyRole("ADMIN").mvcMatchers(HttpMethod.PUT).hasAnyRole("ADMIN")
-            .mvcMatchers(HttpMethod.PATCH).hasAnyRole("ADMIN").mvcMatchers(HttpMethod.DELETE)
-            .hasAnyRole("ADMIN").anyRequest().authenticated())
+    http.cors(cors -> cors.disable())
+        .csrf(csrf -> csrf.disable())
+        .authorizeRequests(requests -> requests
+            .mvcMatchers(HttpMethod.GET).hasAnyRole("ADMIN", "USER")
+            .mvcMatchers(HttpMethod.POST).hasAnyRole("ADMIN")
+            .mvcMatchers(HttpMethod.PUT).hasAnyRole("ADMIN")
+            .mvcMatchers(HttpMethod.PATCH).hasAnyRole("ADMIN")
+            .mvcMatchers(HttpMethod.DELETE).hasAnyRole("ADMIN")
+            .anyRequest().authenticated())
         .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
   }
 
