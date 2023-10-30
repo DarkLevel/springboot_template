@@ -6,7 +6,41 @@
       "name": "ProjectApplication",
       "request": "launch",
       "mainClass": "com.example.demo.ProjectApplication",
-      "projectName": "demo"
+      "projectName": "demo",
+      "args": [
+        "--database_password=${input:database_password}",
+        "--secret=${input:secret}",
+        "--password_example=${input:password_example}"
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "database_password",
+      "type": "command",
+      "command": "extension.commandvariable.file.content",
+      "args": {
+        "fileName": "${workspaceFolder}/src/main/resources/secret.properties",
+        "key": "database_password"
+      }
+    },
+    {
+      "id": "secret",
+      "type": "command",
+      "command": "extension.commandvariable.file.content",
+      "args": {
+        "fileName": "${workspaceFolder}/src/main/resources/secret.properties",
+        "key": "secret"
+      }
+    },
+    {
+      "id": "password_example",
+      "type": "command",
+      "command": "extension.commandvariable.file.content",
+      "args": {
+        "fileName": "${workspaceFolder}/src/main/resources/secret.properties",
+        "key": "password_example"
+      }
     }
   ]
 }

@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -17,7 +16,7 @@ public class ProjectApplication implements CommandLineRunner {
   @Autowired
   private BCryptPasswordEncoder passwordEncoder;
 
-  @Value("${password.example}")
+  @Value("${password_example}")
   private String password;
 
   public static void main(String[] args) {
@@ -26,11 +25,7 @@ public class ProjectApplication implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
-    String generatedPassword = passwordEncoder.encode(password);
-
-    if (!StringUtils.isEmpty(generatedPassword)) {
-      log.info("'" + generatedPassword + "'");
-    }
+    log.info("Encripted password example: [" + passwordEncoder.encode(password) + "]");
   }
 
 }

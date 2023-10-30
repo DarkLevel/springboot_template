@@ -26,8 +26,8 @@ public class AuthServer extends AuthorizationServerConfigurerAdapter {
   @Qualifier("authenticationManager")
   private AuthenticationManager authenticationManager;
 
-  @Value("${password.example}")
-  private String password;
+  @Value("${secret}")
+  private String secret;
 
   @Override
   public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
@@ -38,7 +38,7 @@ public class AuthServer extends AuthorizationServerConfigurerAdapter {
   @Override
   public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
     clients.inMemory().withClient("restclient")
-        .secret(passwordEncoder.encode(password))
+        .secret(passwordEncoder.encode(secret))
         .scopes("read", "write")
         .authorizedGrantTypes("password", "refresh_token")
         .accessTokenValiditySeconds(60 * 60)
