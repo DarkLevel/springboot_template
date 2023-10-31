@@ -1,70 +1,38 @@
 package com.example.demo.service.impl;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
+import com.example.demo.exception.GenericException;
+import com.example.demo.model.AuthModel;
+import com.example.demo.service.IAuthService;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
+@Service
+public class AuthService implements IAuthService {
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+  @Autowired
+  private TokenService tokenService;
 
-@Component
-public class AuthService {
+  @Autowired
+  private AuthenticationManager authenticationManager;
 
-  @Value("${secret}")
-  private static String SECRET;
+  @Override
+  public String getToken(AuthModel authModel) throws GenericException {
+    try {
+      Authentication authentication = authenticationManager
+          .authenticate(new UsernamePasswordAuthenticationToken(authModel.getUsername(), authModel.getPassword()));
 
-  public String extractUsername(String token) {
-    return extractClaim(token, Claims::getSubject);
-  }
-
-  public Date extractExpiration(String token) {
-    return extractClaim(token, Claims::getExpiration);
-  }
-
-  public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-    return claimsResolver.apply(extractAllClaims(token));
-  }
-
-  public boolean validateToken(String token, UserDetails userDetails) {
-    return (extractUsername(token).equals(userDetails.getUsername()) && !isTokenExpired(token));
-  }
-
-  public String generateToken(String userName) {
-    return createToken(new HashMap<>(), userName);
-  }
-
-  private Claims extractAllClaims(String token) {
-    return Jwts.parser()
-        .verifyWith(getSignKey())
-        .build()
-        .parseSignedClaims(token)
-        .getPayload();
-  }
-
-  private Boolean isTokenExpired(String token) {
-    return extractExpiration(token).before(new Date());
-  }
-
-  private String createToken(Map<String, Object> claims, String userName) {
-    return Jwts.builder()
-        .claims().empty().add(claims).and()
-        .subject(userName)
-        .issuedAt(new Date(System.currentTimeMillis()))
-        .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
-        .signWith(getSignKey()).compact();
-  }
-
-  private SecretKey getSignKey() {
-    return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET));
+      if (authentication.isAuthenticated()) {
+        return tokenService.generateToken(authModel.getUsername());
+      } else {
+        throw new GenericException("User not found", 404);
+      }
+    } catch (Exception e) {
+      throw new GenericException(e.getMessage(), e, 500);
+    }
   }
 
 }
