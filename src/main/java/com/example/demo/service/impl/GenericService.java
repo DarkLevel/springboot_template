@@ -6,14 +6,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.demo.dao.IGenericDao;
 import com.example.demo.exception.GenericException;
 import com.example.demo.model.GenericModel;
 import com.example.demo.service.IGenericService;
+
+import jakarta.transaction.Transactional;
 
 public abstract class GenericService<T extends GenericModel, I extends Serializable>
     implements IGenericService<T, I> {

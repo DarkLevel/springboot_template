@@ -1,8 +1,12 @@
 package com.example.demo.service.impl;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -47,7 +51,15 @@ public class CustomUserDetailsService implements UserDetailsService {
       throw new UsernameNotFoundException("The user has no roles asigned");
     }
 
-    return new CustomUserDetails(userModel, lUserRoleModel);
+    Collection<? extends GrantedAuthority> authorities = lUserRoleModel
+        .stream()
+        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRoleModel().getName().toUpperCase()))
+        .collect(Collectors.toList());
+
+    log.info("{\"" + userModel.getUsername() + "_roles\":["
+        + authorities.stream().map(e -> "\"" + e.getAuthority() + "\"").collect(Collectors.joining(", ")) + "]}");
+
+    return new CustomUserDetails(userModel, authorities);
   }
 
 }

@@ -3,8 +3,6 @@ package com.example.demo.service.impl;
 import java.util.Collection;
 import java.util.Collections;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +12,8 @@ import com.example.demo.model.UserModel;
 import com.example.demo.model.UserRoleModel;
 import com.example.demo.service.IUserRoleService;
 import com.example.demo.service.IUserService;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class UserService extends GenericService<UserModel, Long> implements IUserService {

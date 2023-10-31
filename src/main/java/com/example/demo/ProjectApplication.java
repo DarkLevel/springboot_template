@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ProjectApplication implements CommandLineRunner {
 
   @Autowired
-  private BCryptPasswordEncoder passwordEncoder;
+  private PasswordEncoder passwordEncoder;
 
   @Value("${password_example}")
   private String password;
