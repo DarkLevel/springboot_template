@@ -42,21 +42,13 @@ public class SecurityConfig {
   }
 
   @Bean
-  SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    return http.cors(AbstractHttpConfigurer::disable)
-        .csrf(AbstractHttpConfigurer::disable)
-        .authorizeHttpRequests(
-            auth -> auth.requestMatchers("/configuration/**", "/swagger-ui/**", "/docs/**", "/auth/login").permitAll()
-                .anyRequest().authenticated())
-        .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authenticationProvider(authenticationProvider())
-        .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-        .build();
+  PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 
   @Bean
-  PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
+  AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+    return config.getAuthenticationManager();
   }
 
   @Bean
@@ -68,8 +60,16 @@ public class SecurityConfig {
   }
 
   @Bean
-  AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-    return config.getAuthenticationManager();
+  SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    return http.cors(AbstractHttpConfigurer::disable)
+        .csrf(AbstractHttpConfigurer::disable)
+        .authorizeHttpRequests(
+            auth -> auth.requestMatchers("/configuration/**", "/swagger-ui/**", "/docs/**", "/auth/login").permitAll()
+                .anyRequest().authenticated())
+        .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authenticationProvider(authenticationProvider())
+        .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+        .build();
   }
 
   @Bean
