@@ -57,7 +57,7 @@ public class TokenService {
         .subject(username)
         .issuedAt(issuedAt)
         .expiration(expiration)
-        .signWith(getSignKey(secret)).compact();
+        .signWith(getSignKey(secret), Jwts.SIG.HS256).compact();
   }
 
   private SecretKey getSignKey(String secret) {
