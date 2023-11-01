@@ -60,7 +60,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     Collection<? extends GrantedAuthority> authorities = lUserRoleModel
         .stream()
-        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRoleModel().getName()))
+        .map(role -> new SimpleGrantedAuthority(role.getRoleModel().getName()))
         .collect(Collectors.toList());
 
     return new CustomUserDetails(userModel, authorities);

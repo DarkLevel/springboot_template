@@ -12,7 +12,7 @@ import com.example.demo.utils.ResponseObject;
 @RequestMapping("/user")
 public interface IUserController extends IGenericController<UserModel, Long> {
 
-  @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
+  @PreAuthorize("hasAnyAuthority('admin','user')")
   @GetMapping("/username/{username}")
   public ResponseEntity<ResponseObject> get(@PathVariable(required = true) String username);
 
