@@ -5,9 +5,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UnauthorizedResponseObject {
+public class ForbiddenResponseObject {
 
+  private String timestamp;
+  private Integer status;
   private String error;
-  private String error_description;
+  private String path;
 
 }

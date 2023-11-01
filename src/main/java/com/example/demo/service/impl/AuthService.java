@@ -77,7 +77,7 @@ public class AuthService implements IAuthService {
     } catch (GenericException e) {
       throw e;
     } catch (BadCredentialsException e) {
-      throw new GenericException(e.getMessage(), e, 401);
+      throw new GenericException(e.getMessage(), e, 404);
     } catch (Exception e) {
       throw new GenericException(e.getMessage(), e, 500);
     }
