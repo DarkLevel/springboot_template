@@ -12,11 +12,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dao.IUserDao;
 import com.example.demo.dao.IUserRoleDao;
+import com.example.demo.exception.GenericException;
 import com.example.demo.model.CustomUserDetails;
 import com.example.demo.model.UserModel;
 import com.example.demo.model.UserRoleModel;
+import com.example.demo.service.IUserService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomUserDetailsService implements UserDetailsService {
 
   @Autowired
-  private IUserDao userDao;
+  private IUserService userService;
 
   @Autowired
   private IUserRoleDao userRoleDao;
@@ -37,7 +38,13 @@ public class CustomUserDetailsService implements UserDetailsService {
       throw new UsernameNotFoundException("The user is empty");
     }
 
-    UserModel userModel = userDao.findByUsername(username);
+    UserModel userModel;
+
+    try {
+      userModel = userService.getByUsername(username);
+    } catch (GenericException e) {
+      throw new UsernameNotFoundException("Error retrieving user");
+    }
 
     if (userModel == null) {
       log.error("The user doesn't exists");
@@ -55,9 +62,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         .stream()
         .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRoleModel().getName().toUpperCase()))
         .collect(Collectors.toList());
-
-    log.info("{\"" + userModel.getUsername() + "_roles\":["
-        + authorities.stream().map(e -> "\"" + e.getAuthority() + "\"").collect(Collectors.joining(", ")) + "]}");
 
     return new CustomUserDetails(userModel, authorities);
   }

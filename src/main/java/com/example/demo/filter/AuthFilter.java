@@ -3,6 +3,7 @@ package com.example.demo.filter;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,9 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class AuthFilter extends OncePerRequestFilter {
 
+  @Value("${secret}")
+  private String secret;
+
   @Autowired
   private TokenService tokenService;
 
@@ -36,13 +40,13 @@ public class AuthFilter extends OncePerRequestFilter {
 
     if (authHeader != null && authHeader.startsWith("Bearer ")) {
       token = authHeader.substring(7);
-      username = tokenService.extractUsername(token);
+      username = tokenService.extractUsername(token, secret);
     }
 
     if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
       UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-      if (tokenService.validateToken(token, userDetails)) {
+      if (tokenService.validateToken(userDetails, token, secret)) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null,
             userDetails.getAuthorities());
         authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

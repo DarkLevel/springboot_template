@@ -5,6 +5,6 @@ import com.example.demo.model.AuthModel;
 
 public interface IAuthService {
 
-  public String getToken(AuthModel authModel) throws GenericException;
+  public AuthModel getToken(AuthModel authModel) throws GenericException;
 
 }

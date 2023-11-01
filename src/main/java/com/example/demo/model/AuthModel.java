@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import java.util.Collection;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -18,5 +20,17 @@ public class AuthModel {
 
   @JsonProperty(access = Access.WRITE_ONLY)
   private String password;
+
+  @JsonProperty(access = Access.READ_ONLY)
+  private Collection<String> roles;
+
+  @JsonProperty(access = Access.READ_ONLY)
+  private String access_token;
+
+  @JsonProperty(access = Access.READ_ONLY)
+  private String issuedAt;
+
+  @JsonProperty(access = Access.READ_ONLY)
+  private String expiration;
 
 }
