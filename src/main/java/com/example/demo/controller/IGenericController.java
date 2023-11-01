@@ -18,39 +18,39 @@ import com.example.demo.utils.ResponseObject;
 
 public interface IGenericController<T extends GenericModel, I extends Serializable> {
 
-  @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+  @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
   @GetMapping("/{id}")
   public ResponseEntity<ResponseObject> get(@PathVariable(required = true) I i);
 
-  @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+  @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
   @PostMapping("/get_multiple")
   public ResponseEntity<ResponseObject> get(@RequestBody(required = true) Collection<I> lI);
 
-  @PreAuthorize("hasAuthority('ADMIN')")
+  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
   @PostMapping
   public ResponseEntity<ResponseObject> create(@RequestBody(required = true) T t);
 
-  @PreAuthorize("hasAuthority('ADMIN')")
+  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
   @PostMapping("/create_multiple")
   public ResponseEntity<ResponseObject> create(@RequestBody(required = true) Collection<T> lT);
 
-  @PreAuthorize("hasAuthority('ADMIN')")
+  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
   @PutMapping("/{id}")
   public ResponseEntity<ResponseObject> update(@PathVariable(required = true) I i, @RequestBody(required = true) T t);
 
-  @PreAuthorize("hasAuthority('ADMIN')")
+  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
   @PatchMapping("/disable")
   public ResponseEntity<ResponseObject> disable(@RequestBody(required = true) Collection<I> lI);
 
-  @PreAuthorize("hasAuthority('ADMIN')")
+  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
   @PatchMapping("/enable")
   public ResponseEntity<ResponseObject> enable(@RequestBody(required = true) Collection<I> lI);
 
-  @PreAuthorize("hasAuthority('ADMIN')")
+  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
   @DeleteMapping("/{id}")
   public ResponseEntity<ResponseObject> delete(@PathVariable(required = true) I i);
 
-  @PreAuthorize("hasAuthority('ADMIN')")
+  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
   @DeleteMapping
   public ResponseEntity<ResponseObject> delete(@RequestBody(required = true) Collection<I> lI);
 
