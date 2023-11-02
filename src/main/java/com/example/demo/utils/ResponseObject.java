@@ -1,6 +1,5 @@
 package com.example.demo.utils;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -16,8 +15,7 @@ public class ResponseObject {
   private Object data;
 
   public static ResponseObject create(int status, Object data) {
-    Metadata metadata = new Metadata(status, new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sssXXX").format(new Date()));
-    return new ResponseObject(metadata, data);
+    return new ResponseObject(new Metadata(status, Utilities.formatDateToISO(new Date())), data);
   }
 
 }

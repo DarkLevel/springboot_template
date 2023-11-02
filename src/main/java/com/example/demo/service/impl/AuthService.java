@@ -1,6 +1,5 @@
 package com.example.demo.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +20,7 @@ import com.example.demo.model.UserModel;
 import com.example.demo.model.UserRoleModel;
 import com.example.demo.service.IAuthService;
 import com.example.demo.service.IUserService;
+import com.example.demo.utils.Utilities;
 
 @Service
 public class AuthService implements IAuthService {
@@ -67,12 +67,10 @@ public class AuthService implements IAuthService {
       Date expiration = new Date(System.currentTimeMillis() + tokenExpiration * 1000);
       String token = tokenService.generateToken(authModel.getUsername(), issuedAt, expiration, secret);
 
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sssXXX");
-
       authModel.setUsername(tokenService.extractUsername(token, secret));
       authModel.setRoles(roles);
-      authModel.setIssuedAt(sdf.format(issuedAt));
-      authModel.setExpiration(sdf.format(expiration));
+      authModel.setIssuedAt(Utilities.formatDateToISO(issuedAt));
+      authModel.setExpiration(Utilities.formatDateToISO(expiration));
       authModel.setAccess_token(token);
     } catch (GenericException e) {
       throw e;
