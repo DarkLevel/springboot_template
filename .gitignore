@@ -10,5 +10,6 @@ target/
 ### Local History ###
 .history
 
-### Secrets ###
-secret.properties
+### Sensible data ###
+secrets.yaml
+data.sql

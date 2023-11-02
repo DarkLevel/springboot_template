@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://127.0.0.1:5432/postgres
+    username: postgres
+    password: ${databasePassword}
+  sql:
+    init:
+      mode: always
+  jpa:
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+    open-in-view: false
+    properties:
+      hibernate:
+        "[schema_update]":
+          "[unique_constraint_strategy]": RECREATE_QUIETLY
+access_token_expiration: 3600
+refresh_token_expiration: 86400
+openapi:
+  dev-url: http://localhost:8080
+  prod-url: http://localhost:8080
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+    tryItOutEnabled: true
+    operationsSorter: alpha
+    tagsSorter: alpha
+    filter: true
+  api-docs:
+    path: /docs
+  packages-to-scan: com.example.demo.controller

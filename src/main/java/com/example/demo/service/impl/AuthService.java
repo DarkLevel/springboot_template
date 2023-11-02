@@ -32,8 +32,8 @@ import jakarta.transaction.Transactional;
 @Service
 public class AuthService implements IAuthService {
 
-  @Value("${secret}")
-  private String secret;
+  @Value("${tokenSecret}")
+  private String tokenSecret;
 
   @Value("${access_token_expiration}")
   private Long accessTokenExpiration;
@@ -132,8 +132,8 @@ public class AuthService implements IAuthService {
           .collect(Collectors.toList());
       Date issuedAt = new Date();
       Date expiration = new Date(System.currentTimeMillis() + accessTokenExpiration * 1000);
-      String accessToken = tokenService.generateToken(authModel.getUsername(), issuedAt, expiration, secret);
-      String username = tokenService.extractUsername(accessToken, secret);
+      String accessToken = tokenService.generateToken(authModel.getUsername(), issuedAt, expiration, tokenSecret);
+      String username = tokenService.extractUsername(accessToken, tokenSecret);
 
       authModel.setUsername(username);
       authModel.setRoles(roles);

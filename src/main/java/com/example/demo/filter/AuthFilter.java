@@ -27,8 +27,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class AuthFilter extends OncePerRequestFilter {
 
-  @Value("${secret}")
-  private String secret;
+  @Value("${tokenSecret}")
+  private String tokenSecret;
 
   @Autowired
   private HandlerExceptionResolver handlerExceptionResolver;
@@ -51,7 +51,7 @@ public class AuthFilter extends OncePerRequestFilter {
           Arrays.asList(OpenEndpoints.values()).stream().map(e -> e.getValue()).toList())) {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
           token = authHeader.substring(7);
-          username = tokenService.extractUsername(token, secret);
+          username = tokenService.extractUsername(token, tokenSecret);
         } else {
           throw new BadCredentialsException("Unauthorized");
         }
@@ -60,7 +60,7 @@ public class AuthFilter extends OncePerRequestFilter {
       if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-        if (tokenService.validateToken(userDetails, token, secret)) {
+        if (tokenService.validateToken(userDetails, token, tokenSecret)) {
           UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null,
               userDetails.getAuthorities());
           authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

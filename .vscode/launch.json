@@ -8,28 +8,28 @@
       "mainClass": "com.example.demo.ProjectApplication",
       "projectName": "demo",
       "args": [
-        "--database_password=${input:database_password}",
-        "--secret=${input:secret}"
+        "--databasePassword=${input:databasePassword}",
+        "--tokenSecret=${input:tokenSecret}"
       ]
     }
   ],
   "inputs": [
     {
-      "id": "database_password",
+      "id": "databasePassword",
       "type": "command",
       "command": "extension.commandvariable.file.content",
       "args": {
-        "fileName": "${workspaceFolder}/src/main/resources/secret.properties",
-        "key": "database_password"
+        "fileName": "${workspaceFolder}/src/main/resources/secrets.yaml",
+        "yaml": "content.databasePassword"
       }
     },
     {
-      "id": "secret",
+      "id": "tokenSecret",
       "type": "command",
       "command": "extension.commandvariable.file.content",
       "args": {
-        "fileName": "${workspaceFolder}/src/main/resources/secret.properties",
-        "key": "secret"
+        "fileName": "${workspaceFolder}/src/main/resources/secrets.yaml",
+        "yaml": "content.tokenSecret"
       }
     }
   ]
