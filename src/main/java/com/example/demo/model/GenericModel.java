@@ -9,6 +9,8 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -36,19 +38,23 @@ public class GenericModel implements Serializable {
   private boolean enabled;
 
   @CreatedBy
+  @JsonProperty(access = Access.READ_ONLY)
   @Column(name = "created_by", length = 20, nullable = false, updatable = false)
   private String createdBy;
 
   @CreationTimestamp
+  @JsonProperty(access = Access.READ_ONLY)
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "Europe/Madrid")
   @Column(name = "created_date", nullable = false, updatable = false)
   private Instant createdDate;
 
   @LastModifiedBy
+  @JsonProperty(access = Access.READ_ONLY)
   @Column(name = "modified_by", length = 20, insertable = false)
   private String modifiedBy;
 
   @UpdateTimestamp
+  @JsonProperty(access = Access.READ_ONLY)
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "Europe/Madrid")
   @Column(name = "modified_date", insertable = false)
   private Instant modifiedDate;

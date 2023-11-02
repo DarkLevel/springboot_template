@@ -32,4 +32,8 @@ public class UserModel extends GenericModel {
   @Column(nullable = false, length = 65)
   private String password;
 
+  public UserModel(Long id) {
+    this.setId(id);
+  }
+
 }
