@@ -128,7 +128,7 @@ public class Config {
   }
 
   private String[] mappings() {
-    return new String[] { "/", "/configuration/**", "/swagger-ui/**", "/docs/**", "/auth/login" };
+    return new String[] { "/", "/configuration/**", "/swagger-ui/**", "/docs/**", "/auth/**" };
   }
 
 }

@@ -9,8 +9,7 @@
       "projectName": "demo",
       "args": [
         "--database_password=${input:database_password}",
-        "--secret=${input:secret}",
-        "--password_example=${input:password_example}"
+        "--secret=${input:secret}"
       ]
     }
   ],
@@ -31,15 +30,6 @@
       "args": {
         "fileName": "${workspaceFolder}/src/main/resources/secret.properties",
         "key": "secret"
-      }
-    },
-    {
-      "id": "password_example",
-      "type": "command",
-      "command": "extension.commandvariable.file.content",
-      "args": {
-        "fileName": "${workspaceFolder}/src/main/resources/secret.properties",
-        "key": "password_example"
       }
     }
   ]
