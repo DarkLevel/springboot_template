@@ -69,13 +69,13 @@ public class AuthService implements IAuthService {
 
       authModel.setUsername(tokenService.extractUsername(token, secret));
       authModel.setRoles(roles);
-      authModel.setIssuedAt(Utilities.formatDateToISO(issuedAt));
-      authModel.setExpiration(Utilities.formatDateToISO(expiration));
+      authModel.setIssuedAt(Utilities.formatDateToISOWithoutMillis(issuedAt));
+      authModel.setExpiration(Utilities.formatDateToISOWithoutMillis(expiration));
       authModel.setAccess_token(token);
     } catch (GenericException e) {
       throw e;
     } catch (BadCredentialsException e) {
-      throw new GenericException(e.getMessage(), e, 404);
+      throw new GenericException(e.getMessage(), e, 401);
     } catch (Exception e) {
       throw new GenericException(e.getMessage(), e, 500);
     }

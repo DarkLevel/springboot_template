@@ -1,18 +1,22 @@
 package com.example.demo.filter;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import com.example.demo.service.impl.CustomUserDetailsService;
 import com.example.demo.service.impl.TokenService;
+import com.example.demo.utils.Utilities;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,6 +30,9 @@ public class AuthFilter extends OncePerRequestFilter {
   private String secret;
 
   @Autowired
+  private HandlerExceptionResolver handlerExceptionResolver;
+
+  @Autowired
   private TokenService tokenService;
 
   @Autowired
@@ -34,27 +41,36 @@ public class AuthFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
-    String authHeader = request.getHeader("Authorization");
-    String token = null;
-    String username = null;
+    try {
+      String authHeader = request.getHeader("Authorization");
+      String token = null;
+      String username = null;
 
-    if (authHeader != null && authHeader.startsWith("Bearer ")) {
-      token = authHeader.substring(7);
-      username = tokenService.extractUsername(token, secret);
-    }
-
-    if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-      UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-      if (tokenService.validateToken(userDetails, token, secret)) {
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null,
-            userDetails.getAuthorities());
-        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+      if (!Utilities.startsWith(request.getRequestURI(),
+          Arrays.asList("/configuration", "/swagger-ui", "/docs", "/auth"))) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+          token = authHeader.substring(7);
+          username = tokenService.extractUsername(token, secret);
+        } else {
+          throw new BadCredentialsException("Unauthorized");
+        }
       }
-    }
 
-    filterChain.doFilter(request, response);
+      if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        if (tokenService.validateToken(userDetails, token, secret)) {
+          UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null,
+              userDetails.getAuthorities());
+          authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+          SecurityContextHolder.getContext().setAuthentication(authToken);
+        }
+      }
+
+      filterChain.doFilter(request, response);
+    } catch (Exception e) {
+      handlerExceptionResolver.resolveException(request, response, null, e);
+    }
   }
 
 }

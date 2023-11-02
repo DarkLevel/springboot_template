@@ -127,7 +127,7 @@ public class Config {
         .info(info).servers(List.of(devServer, prodServer));
   }
 
-  private String[] mappings() {
+  private static String[] mappings() {
     return new String[] { "/", "/configuration/**", "/swagger-ui/**", "/docs/**", "/auth/**" };
   }
 
