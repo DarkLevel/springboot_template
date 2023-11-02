@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
+import com.example.demo.enums.OpenEndpoints;
 import com.example.demo.service.impl.CustomUserDetailsService;
 import com.example.demo.service.impl.TokenService;
 import com.example.demo.utils.Utilities;
@@ -47,7 +48,7 @@ public class AuthFilter extends OncePerRequestFilter {
       String username = null;
 
       if (!Utilities.startsWith(request.getRequestURI(),
-          Arrays.asList("/configuration", "/swagger-ui", "/docs", "/auth"))) {
+          Arrays.asList(OpenEndpoints.values()).stream().map(e -> e.getValue()).toList())) {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
           token = authHeader.substring(7);
           username = tokenService.extractUsername(token, secret);

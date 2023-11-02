@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.example.demo.enums.OpenEndpoints;
 import com.example.demo.filter.AuthFilter;
 import com.example.demo.service.impl.CustomUserDetailsService;
 
@@ -128,7 +130,8 @@ public class Config {
   }
 
   private static String[] mappings() {
-    return new String[] { "/", "/configuration/**", "/swagger-ui/**", "/docs/**", "/auth/**" };
+    return Arrays.asList(OpenEndpoints.values()).stream().map(e -> e.getValue() + "/**").toList()
+        .toArray(new String[0]);
   }
 
 }
