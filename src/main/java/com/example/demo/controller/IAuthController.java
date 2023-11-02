@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,7 +48,7 @@ public interface IAuthController {
       @Content(schema = @Schema(implementation = ResponseObject.class), mediaType = "application/json") })
   @ApiResponse(responseCode = "500", description = "Internal server error", content = {
       @Content(schema = @Schema(implementation = ResponseObject.class), mediaType = "application/json") })
-  @PostMapping("/revoke_token")
+  @DeleteMapping("/refresh_token")
   public ResponseEntity<ResponseObject> revokeRefreshToken(@RequestBody(required = true) String refreshToken);
 
 }
