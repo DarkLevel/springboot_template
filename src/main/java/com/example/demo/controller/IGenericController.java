@@ -46,7 +46,7 @@ public interface IGenericController<T extends GenericModel, I extends Serializab
       @Content(schema = @Schema(implementation = ResponseObject.class), mediaType = "application/json") })
   @ApiResponse(responseCode = "500", description = "Internal server error", content = {
       @Content(schema = @Schema(implementation = ResponseObject.class), mediaType = "application/json") })
-  @PreAuthorize("hasAnyAuthority('admin','user')")
+  @PreAuthorize("hasAnyAuthority('admin')")
   @PostMapping("/get_multiple")
   public ResponseEntity<ResponseObject> get(@RequestBody(required = true) Collection<I> lI);
 
