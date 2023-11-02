@@ -29,7 +29,7 @@ public class UserService extends GenericService<UserModel, Long> implements IUse
     try {
       return userDao.findByUsername(username);
     } catch (Exception e) {
-      throw new GenericException(e.getMessage(), e, 500);
+      throw new GenericException(e.getMessage(), e, 400);
     }
   }
 
@@ -41,7 +41,7 @@ public class UserService extends GenericService<UserModel, Long> implements IUse
       userRoleService.create(new UserRoleModel(createdUser, 2L));
       return createdUser;
     } catch (Exception e) {
-      throw new GenericException(e.getMessage(), e, 500);
+      throw new GenericException(e.getMessage(), e, 400);
     }
   }
 
@@ -54,7 +54,7 @@ public class UserService extends GenericService<UserModel, Long> implements IUse
       userRoleService.create(lCreatedUser.stream().map(e -> new UserRoleModel(e, 2L)).toList());
       return lCreatedUser;
     } catch (Exception e) {
-      throw new GenericException(e.getMessage(), e, 500);
+      throw new GenericException(e.getMessage(), e, 400);
     }
   }
 

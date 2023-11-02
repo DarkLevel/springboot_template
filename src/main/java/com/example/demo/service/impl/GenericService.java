@@ -27,7 +27,7 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
     try {
       return genericDao.get(i);
     } catch (Exception e) {
-      throw new GenericException(e.getMessage(), e, 500);
+      throw new GenericException(e.getMessage(), e, 400);
     }
   }
 
@@ -37,7 +37,7 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
     try {
       return genericDao.get(lI);
     } catch (Exception e) {
-      throw new GenericException(e.getMessage(), e, 500);
+      throw new GenericException(e.getMessage(), e, 400);
     }
   }
 
@@ -47,7 +47,7 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
     try {
       return genericDao.save(t);
     } catch (Exception e) {
-      throw new GenericException(e.getMessage(), e, 500);
+      throw new GenericException(e.getMessage(), e, 400);
     }
   }
 
@@ -58,7 +58,7 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
       lT.removeAll(Collections.singleton(null));
       return genericDao.save(lT);
     } catch (Exception e) {
-      throw new GenericException(e.getMessage(), e, 500);
+      throw new GenericException(e.getMessage(), e, 400);
     }
   }
 
@@ -69,7 +69,7 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
       t.setId((Long) i);
       return genericDao.save(t);
     } catch (Exception e) {
-      throw new GenericException(e.getMessage(), e, 500);
+      throw new GenericException(e.getMessage(), e, 400);
     }
   }
 
@@ -79,7 +79,7 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
     try {
       return changeStatus(lI, false);
     } catch (Exception e) {
-      throw new GenericException(e.getMessage(), e, 500);
+      throw new GenericException(e.getMessage(), e, 400);
     }
   }
 
@@ -89,7 +89,7 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
     try {
       return changeStatus(lI, true);
     } catch (Exception e) {
-      throw new GenericException(e.getMessage(), e, 500);
+      throw new GenericException(e.getMessage(), e, 400);
     }
   }
 
@@ -100,7 +100,7 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
       genericDao.delete(i);
       return 1;
     } catch (Exception e) {
-      throw new GenericException(e.getMessage(), e, 500);
+      throw new GenericException(e.getMessage(), e, 400);
     }
   }
 
@@ -112,7 +112,7 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
       genericDao.delete(lI);
       return lI.size();
     } catch (Exception e) {
-      throw new GenericException(e.getMessage(), e, 500);
+      throw new GenericException(e.getMessage(), e, 400);
     }
   }
 
@@ -132,7 +132,7 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
 
       return genericDao.save(lT);
     } catch (Exception e) {
-      throw new GenericException(e.getMessage(), e, 500);
+      throw new GenericException(e.getMessage(), e, 400);
     }
   }
 

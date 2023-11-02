@@ -78,7 +78,7 @@ public class AuthService implements IAuthService {
     } catch (BadCredentialsException e) {
       throw new GenericException(e.getMessage(), e, 401);
     } catch (Exception e) {
-      throw new GenericException(e.getMessage(), e, 500);
+      throw new GenericException(e.getMessage(), e, 400);
     }
 
     return authModel;
@@ -102,7 +102,7 @@ public class AuthService implements IAuthService {
 
       return getAuthModel(authModel, refreshTokenModel.getUserModel(), refreshTokenModel);
     } catch (Exception e) {
-      throw new GenericException(e.getMessage(), e, 500);
+      throw new GenericException(e.getMessage(), e, 400);
     }
   }
 
@@ -119,7 +119,7 @@ public class AuthService implements IAuthService {
       refreshTokenDao.delete(refreshTokenModel.getId());
       return 1;
     } catch (Exception e) {
-      throw new GenericException(e.getMessage(), e, 500);
+      throw new GenericException(e.getMessage(), e, 400);
     }
   }
 
@@ -144,7 +144,7 @@ public class AuthService implements IAuthService {
 
       return authModel;
     } catch (Exception e) {
-      throw new GenericException(e.getMessage(), e, 500);
+      throw new GenericException(e.getMessage(), e, 400);
     }
   }
 
