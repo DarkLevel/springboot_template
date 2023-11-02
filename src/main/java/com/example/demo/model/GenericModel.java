@@ -39,24 +39,24 @@ public class GenericModel implements Serializable {
 
   @CreatedBy
   @JsonProperty(access = Access.READ_ONLY)
-  @Column(name = "created_by", length = 20, nullable = false, updatable = false)
+  @Column(length = 20, nullable = false, updatable = false)
   private String createdBy;
 
   @CreationTimestamp
   @JsonProperty(access = Access.READ_ONLY)
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "Europe/Madrid")
-  @Column(name = "created_date", nullable = false, updatable = false)
+  @Column(nullable = false, updatable = false)
   private Instant createdDate;
 
   @LastModifiedBy
   @JsonProperty(access = Access.READ_ONLY)
-  @Column(name = "modified_by", length = 20, insertable = false)
+  @Column(length = 20, insertable = false)
   private String modifiedBy;
 
   @UpdateTimestamp
   @JsonProperty(access = Access.READ_ONLY)
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "Europe/Madrid")
-  @Column(name = "modified_date", insertable = false)
+  @Column(insertable = false)
   private Instant modifiedDate;
 
 }

@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import java.time.Instant;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -28,15 +29,30 @@ import lombok.Setter;
 @Table(name = "refresh_token")
 public class RefreshTokenModel extends GenericModel {
 
-  private String token;
+  @Column(nullable = false, updatable = false, unique = true)
+  private String refreshToken;
 
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "Europe/Madrid")
-  @Column(name = "expiry_date", nullable = false, updatable = false)
-  private Instant expiryDate;
+  @CreationTimestamp
+  @JsonProperty(access = Access.READ_ONLY)
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX", timezone = "Europe/Madrid")
+  @Column(nullable = false, updatable = false)
+  private Instant issuedAt;
+
+  @JsonProperty(access = Access.READ_ONLY)
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX", timezone = "Europe/Madrid")
+  @Column(nullable = false, updatable = false)
+  private Instant expiration;
 
   @OneToOne
   @JsonProperty(access = Access.WRITE_ONLY)
   @JoinColumn(name = "user_id", nullable = false, updatable = false)
   private UserModel userModel;
+
+  public RefreshTokenModel(String refreshToken, Instant expiration, UserModel userModel) {
+    setEnabled(true);
+    this.refreshToken = refreshToken;
+    this.expiration = expiration;
+    this.userModel = userModel;
+  }
 
 }

@@ -27,6 +27,8 @@ import com.example.demo.service.IAuthService;
 import com.example.demo.service.IUserService;
 import com.example.demo.utils.Utilities;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class AuthService implements IAuthService {
 
@@ -55,7 +57,7 @@ public class AuthService implements IAuthService {
   private IRefreshTokenDao refreshTokenDao;
 
   @Override
-  public AuthModel getToken(AuthModel authModel) throws GenericException {
+  public AuthModel getAccessToken(AuthModel authModel) throws GenericException {
     try {
       UserModel userModel = userService.getByUsername(authModel.getUsername());
 
@@ -70,21 +72,7 @@ public class AuthService implements IAuthService {
         throw new GenericException("User not authenticated", 401);
       }
 
-      List<UserRoleModel> lUserRoleModel = userRoleDao.findByUserModel(userModel);
-
-      Collection<String> roles = lUserRoleModel.stream().map(role -> role.getRoleModel().getName())
-          .collect(Collectors.toList());
-      Date issuedAt = new Date();
-      Date expiration = new Date(System.currentTimeMillis() + accessTokenExpiration * 1000);
-      String token = tokenService.generateToken(authModel.getUsername(), issuedAt, expiration, secret);
-      String username = tokenService.extractUsername(token, secret);
-
-      authModel.setUsername(username);
-      authModel.setRoles(roles);
-      authModel.setAccess_token(new AccessTokenModel(token,
-          Utilities.formatDateToISOWithoutMillis(issuedAt),
-          Utilities.formatDateToISOWithoutMillis(expiration)));
-      authModel.setRefresh_token(createRefreshToken(username));
+      authModel = getAuthModel(authModel, userModel, null);
     } catch (GenericException e) {
       throw e;
     } catch (BadCredentialsException e) {
@@ -96,14 +84,77 @@ public class AuthService implements IAuthService {
     return authModel;
   }
 
-  public RefreshTokenModel createRefreshToken(String username) {
+  public AuthModel getAccessToken(String refreshToken) throws GenericException {
+    try {
+      RefreshTokenModel refreshTokenModel = refreshTokenDao.findByRefreshToken(refreshToken);
+
+      if (refreshTokenModel == null) {
+        throw new GenericException("Token not found", 404);
+      }
+
+      if (refreshTokenModel.getExpiration().compareTo(Instant.now()) < 0) {
+        refreshTokenDao.delete(refreshTokenModel.getId());
+        throw new GenericException("The refresh token is not valid", 401);
+      }
+
+      AuthModel authModel = new AuthModel(refreshTokenModel.getUserModel().getUsername(), null, null, null,
+          refreshTokenModel);
+
+      return getAuthModel(authModel, refreshTokenModel.getUserModel(), refreshTokenModel);
+    } catch (Exception e) {
+      throw new GenericException(e.getMessage(), e, 500);
+    }
+  }
+
+  @Override
+  @Transactional(rollbackOn = GenericException.class)
+  public int revokeRefreshToken(String refreshToken) throws GenericException {
+    try {
+      RefreshTokenModel refreshTokenModel = refreshTokenDao.findByRefreshToken(refreshToken);
+
+      if (refreshTokenModel == null) {
+        throw new GenericException("Token not found", 404);
+      }
+
+      refreshTokenDao.delete(refreshTokenModel.getId());
+      return 1;
+    } catch (Exception e) {
+      throw new GenericException(e.getMessage(), e, 500);
+    }
+  }
+
+  private AuthModel getAuthModel(AuthModel authModel, UserModel userModel, RefreshTokenModel refreshTokenModel)
+      throws GenericException {
+    try {
+      List<UserRoleModel> lUserRoleModel = userRoleDao.findByUserModel(userModel);
+
+      Collection<String> roles = lUserRoleModel.stream().map(role -> role.getRoleModel().getName())
+          .collect(Collectors.toList());
+      Date issuedAt = new Date();
+      Date expiration = new Date(System.currentTimeMillis() + accessTokenExpiration * 1000);
+      String accessToken = tokenService.generateToken(authModel.getUsername(), issuedAt, expiration, secret);
+      String username = tokenService.extractUsername(accessToken, secret);
+
+      authModel.setUsername(username);
+      authModel.setRoles(roles);
+      authModel.setAccess_token(new AccessTokenModel(accessToken,
+          Utilities.formatDateToISOWithoutMillis(issuedAt),
+          Utilities.formatDateToISOWithoutMillis(expiration)));
+      authModel.setRefresh_token(refreshTokenModel != null ? refreshTokenModel : createRefreshToken(username));
+
+      return authModel;
+    } catch (Exception e) {
+      throw new GenericException(e.getMessage(), e, 500);
+    }
+  }
+
+  private RefreshTokenModel createRefreshToken(String username) {
     RefreshTokenModel refreshTokenModel;
 
     try {
       refreshTokenModel = new RefreshTokenModel(UUID.randomUUID().toString(),
           Instant.now().plusMillis(refreshTokenExpiration * 1000),
           userService.getByUsername(username));
-      refreshTokenModel.setEnabled(true);
       refreshTokenModel = refreshTokenDao.save(refreshTokenModel);
     } catch (GenericException e) {
       refreshTokenModel = null;

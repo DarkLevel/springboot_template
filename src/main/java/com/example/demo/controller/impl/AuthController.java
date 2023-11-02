@@ -17,14 +17,40 @@ import com.example.demo.utils.ResponseUtils;
 public class AuthController implements IAuthController {
 
   @Autowired
-  protected AuthService service;
+  protected AuthService authService;
 
   @Override
   public ResponseEntity<ResponseObject> login(AuthModel authModel) {
     ResponseEntity<ResponseObject> responseEntity;
 
     try {
-      responseEntity = ResponseUtils.getResponseEntity(service.getToken(authModel));
+      responseEntity = ResponseUtils.getResponseEntity(authService.getAccessToken(authModel));
+    } catch (GenericException e) {
+      responseEntity = ResponseUtils.getResponseEntity(e);
+    }
+
+    return responseEntity;
+  }
+
+  @Override
+  public ResponseEntity<ResponseObject> refreshToken(String refreshToken) {
+    ResponseEntity<ResponseObject> responseEntity;
+
+    try {
+      responseEntity = ResponseUtils.getResponseEntity(authService.getAccessToken(refreshToken));
+    } catch (GenericException e) {
+      responseEntity = ResponseUtils.getResponseEntity(e);
+    }
+
+    return responseEntity;
+  }
+
+  @Override
+  public ResponseEntity<ResponseObject> revokeRefreshToken(String refreshToken) {
+    ResponseEntity<ResponseObject> responseEntity;
+
+    try {
+      responseEntity = ResponseUtils.getResponseEntity(authService.revokeRefreshToken(refreshToken));
     } catch (GenericException e) {
       responseEntity = ResponseUtils.getResponseEntity(e);
     }
