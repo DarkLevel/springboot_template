@@ -19,9 +19,6 @@ import com.example.demo.model.UserModel;
 import com.example.demo.model.UserRoleModel;
 import com.example.demo.service.IUserService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -33,8 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    if (username == null || (username != null && username.trim().isEmpty())) {
-      log.error("The user is empty");
+    if (username.trim().isEmpty()) {
       throw new UsernameNotFoundException("The user is empty");
     }
 
@@ -47,14 +43,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     if (userModel == null) {
-      log.error("The user doesn't exists");
       throw new UsernameNotFoundException("The user doesn't exists");
     }
 
     List<UserRoleModel> lUserRoleModel = userRoleDao.findByUserModel(userModel);
 
-    if (lUserRoleModel == null || (lUserRoleModel != null && lUserRoleModel.isEmpty())) {
-      log.error("The user has no roles asigned");
+    if (lUserRoleModel.isEmpty()) {
       throw new UsernameNotFoundException("The user has no roles asigned");
     }
 
