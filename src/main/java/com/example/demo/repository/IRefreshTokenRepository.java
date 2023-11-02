@@ -6,6 +6,6 @@ import com.example.demo.model.RefreshTokenModel;
 
 public interface IRefreshTokenRepository extends IGenericRepository<RefreshTokenModel, Long> {
 
-  public Optional<RefreshTokenModel> findByRefreshToken(String refreshToken);
+  public Optional<RefreshTokenModel> findByToken(String token);
 
 }

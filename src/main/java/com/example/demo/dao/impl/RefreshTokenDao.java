@@ -16,8 +16,8 @@ public class RefreshTokenDao extends GenericDao<RefreshTokenModel, Long> impleme
   private IRefreshTokenRepository refreshTokenRepository;
 
   @Override
-  public RefreshTokenModel findByRefreshToken(String token) {
-    Optional<RefreshTokenModel> refreshTokenModel = refreshTokenRepository.findByRefreshToken(token);
+  public RefreshTokenModel findByToken(String token) {
+    Optional<RefreshTokenModel> refreshTokenModel = refreshTokenRepository.findByToken(token);
     return refreshTokenModel.isPresent() ? refreshTokenModel.get() : null;
   }
 

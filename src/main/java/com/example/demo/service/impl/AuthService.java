@@ -86,7 +86,7 @@ public class AuthService implements IAuthService {
 
   public AuthModel getAccessToken(String refreshToken) throws GenericException {
     try {
-      RefreshTokenModel refreshTokenModel = refreshTokenDao.findByRefreshToken(refreshToken);
+      RefreshTokenModel refreshTokenModel = refreshTokenDao.findByToken(refreshToken);
 
       if (refreshTokenModel == null) {
         throw new GenericException("Token not found", 404);
@@ -110,7 +110,7 @@ public class AuthService implements IAuthService {
   @Transactional(rollbackOn = GenericException.class)
   public int revokeRefreshToken(String refreshToken) throws GenericException {
     try {
-      RefreshTokenModel refreshTokenModel = refreshTokenDao.findByRefreshToken(refreshToken);
+      RefreshTokenModel refreshTokenModel = refreshTokenDao.findByToken(refreshToken);
 
       if (refreshTokenModel == null) {
         throw new GenericException("Token not found", 404);

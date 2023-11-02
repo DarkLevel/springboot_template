@@ -15,7 +15,7 @@ import lombok.Setter;
 public class AccessTokenModel {
 
   @JsonProperty(access = Access.READ_ONLY)
-  private String access_token;
+  private String token;
 
   @JsonProperty(access = Access.READ_ONLY)
   private String issuedAt;
