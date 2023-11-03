@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.IRefreshTokenDao;
+import com.example.demo.dao.IUserDao;
 import com.example.demo.dao.IUserRoleDao;
 import com.example.demo.exception.GenericException;
 import com.example.demo.model.AccessTokenModel;
@@ -24,7 +25,6 @@ import com.example.demo.model.RefreshTokenModel;
 import com.example.demo.model.UserModel;
 import com.example.demo.model.UserRoleModel;
 import com.example.demo.service.IAuthService;
-import com.example.demo.service.IUserService;
 import com.example.demo.utils.Utilities;
 
 import jakarta.transaction.Transactional;
@@ -48,7 +48,7 @@ public class AuthService implements IAuthService {
   private TokenService tokenService;
 
   @Autowired
-  private IUserService userService;
+  private IUserDao userDao;
 
   @Autowired
   private IUserRoleDao userRoleDao;
@@ -59,7 +59,7 @@ public class AuthService implements IAuthService {
   @Override
   public AuthModel getAccessToken(AuthModel authModel) throws GenericException {
     try {
-      UserModel userModel = userService.getByUsername(authModel.getUsername());
+      UserModel userModel = userDao.findByUsername(authModel.getUsername());
 
       if (userModel == null) {
         throw new GenericException("User not found", 404);
@@ -149,15 +149,18 @@ public class AuthService implements IAuthService {
   }
 
   private RefreshTokenModel createRefreshToken(String username) {
-    RefreshTokenModel refreshTokenModel;
+    RefreshTokenModel refreshTokenModel = new RefreshTokenModel(UUID.randomUUID().toString(),
+        Instant.now().plusMillis(refreshTokenExpiration * 1000),
+        userDao.findByUsername(username));
 
-    try {
-      refreshTokenModel = new RefreshTokenModel(UUID.randomUUID().toString(),
-          Instant.now().plusMillis(refreshTokenExpiration * 1000),
-          userService.getByUsername(username));
+    RefreshTokenModel refreshTokenModelAux = refreshTokenDao.findByUserModel(userDao.findByUsername(username));
+
+    if (refreshTokenModelAux == null) {
       refreshTokenModel = refreshTokenDao.save(refreshTokenModel);
-    } catch (GenericException e) {
-      refreshTokenModel = null;
+    } else {
+      refreshTokenModelAux.setToken(refreshTokenModel.getToken());
+      refreshTokenModelAux.setExpiration(refreshTokenModel.getExpiration());
+      refreshTokenModel = refreshTokenDao.save(refreshTokenModelAux);
     }
 
     return refreshTokenModel;

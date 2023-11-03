@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.IUserDao;
 import com.example.demo.exception.GenericException;
+import com.example.demo.filter.AuthUtilities;
 import com.example.demo.model.UserModel;
 import com.example.demo.model.UserRoleModel;
 import com.example.demo.service.IUserRoleService;
@@ -26,11 +27,22 @@ public class UserService extends GenericService<UserModel, Long> implements IUse
 
   @Override
   public UserModel getByUsername(String username) throws GenericException {
+    UserModel userModel;
+
     try {
-      return userDao.findByUsername(username);
+      userModel = userDao.findByUsername(username);
+
+      if (!AuthUtilities.isAdmin() && userModel != null
+          && !AuthUtilities.getLoggedUsername().equals(userModel.getUsername())) {
+        throw new GenericException("Forbidden", 403);
+      }
+    } catch (GenericException e) {
+      throw new GenericException(e.getMessage(), e, e.getCode());
     } catch (Exception e) {
       throw new GenericException(e.getMessage(), e, 400);
     }
+
+    return userModel;
   }
 
   @Override
@@ -55,6 +67,14 @@ public class UserService extends GenericService<UserModel, Long> implements IUse
       return lCreatedUser;
     } catch (Exception e) {
       throw new GenericException(e.getMessage(), e, 400);
+    }
+  }
+
+  @Override
+  public void afterGet(UserModel userModel) throws GenericException {
+    if (!AuthUtilities.isAdmin() && userModel != null
+        && !AuthUtilities.getLoggedUsername().equals(userModel.getUsername())) {
+      throw new GenericException("Forbidden", 403);
     }
   }
 

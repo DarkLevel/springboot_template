@@ -12,18 +12,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dao.IUserDao;
 import com.example.demo.dao.IUserRoleDao;
-import com.example.demo.exception.GenericException;
 import com.example.demo.model.CustomUserDetails;
 import com.example.demo.model.UserModel;
 import com.example.demo.model.UserRoleModel;
-import com.example.demo.service.IUserService;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
   @Autowired
-  private IUserService userService;
+  private IUserDao userDao;
 
   @Autowired
   private IUserRoleDao userRoleDao;
@@ -34,13 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
       throw new UsernameNotFoundException("The user is empty");
     }
 
-    UserModel userModel;
-
-    try {
-      userModel = userService.getByUsername(username);
-    } catch (GenericException e) {
-      throw new UsernameNotFoundException("Error retrieving user");
-    }
+    UserModel userModel = userDao.findByUsername(username);
 
     if (userModel == null) {
       throw new UsernameNotFoundException("The user doesn't exists");

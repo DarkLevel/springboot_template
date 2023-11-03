@@ -24,11 +24,19 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
   @Override
   @Transactional(rollbackOn = GenericException.class)
   public Optional<T> get(I i) throws GenericException {
+    Optional<T> resultObject;
+
     try {
-      return genericDao.get(i);
+      beforeGet(i);
+      resultObject = genericDao.get(i);
+      afterGet(resultObject.isPresent() ? resultObject.get() : null);
+    } catch (GenericException e) {
+      throw new GenericException(e.getMessage(), e, e.getCode());
     } catch (Exception e) {
       throw new GenericException(e.getMessage(), e, 400);
     }
+
+    return resultObject;
   }
 
   @Override
@@ -123,6 +131,7 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
 
       for (I i : lI) {
         t = genericDao.get(i);
+
         if (t.isPresent()) {
           lT.add(t.get());
         }
@@ -134,6 +143,16 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
     } catch (Exception e) {
       throw new GenericException(e.getMessage(), e, 400);
     }
+  }
+
+  @Override
+  public void beforeGet(I i) throws GenericException {
+    // Override when implementing
+  }
+
+  @Override
+  public void afterGet(T t) throws GenericException {
+    // Override when implementing
   }
 
 }

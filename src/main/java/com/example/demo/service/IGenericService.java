@@ -27,4 +27,8 @@ public interface IGenericService<T extends GenericModel, I extends Serializable>
 
   public int delete(Collection<I> lI) throws GenericException;
 
+  public void beforeGet(I i) throws GenericException;
+
+  public void afterGet(T t) throws GenericException;
+
 }

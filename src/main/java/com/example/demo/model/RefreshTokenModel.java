@@ -68,18 +68,18 @@ public class RefreshTokenModel extends GenericModel {
   @Column(insertable = false)
   private Instant modifiedDate;
 
-  @Column(nullable = false, updatable = false, unique = true)
+  @Column(nullable = false, unique = true)
   private String token;
 
   @CreationTimestamp
   @JsonProperty(access = Access.READ_ONLY)
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX", timezone = "Europe/Madrid")
-  @Column(nullable = false, updatable = false)
+  @Column(nullable = false)
   private Instant issuedAt;
 
   @JsonProperty(access = Access.READ_ONLY)
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX", timezone = "Europe/Madrid")
-  @Column(nullable = false, updatable = false)
+  @Column(nullable = false)
   private Instant expiration;
 
   @OneToOne

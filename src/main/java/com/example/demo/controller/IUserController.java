@@ -28,7 +28,7 @@ public interface IUserController extends IGenericController<UserModel, Long> {
       @Content(schema = @Schema(implementation = ResponseObject.class), mediaType = "application/json") })
   @ApiResponse(responseCode = "500", description = "Internal server error", content = {
       @Content(schema = @Schema(implementation = ResponseObject.class), mediaType = "application/json") })
-  @PreAuthorize("hasAnyAuthority('admin')")
+  @PreAuthorize("hasAnyAuthority('admin','user')")
   @GetMapping("/username/{username}")
   public ResponseEntity<ResponseObject> get(@PathVariable(required = true) String username);
 
