@@ -7,30 +7,7 @@
       "request": "launch",
       "mainClass": "com.example.demo.ProjectApplication",
       "projectName": "demo",
-      "args": [
-        "--databasePassword=${input:databasePassword}",
-        "--tokenSecret=${input:tokenSecret}"
-      ]
-    }
-  ],
-  "inputs": [
-    {
-      "id": "databasePassword",
-      "type": "command",
-      "command": "extension.commandvariable.file.content",
-      "args": {
-        "fileName": "${workspaceFolder}/src/main/resources/secrets.yaml",
-        "yaml": "content.databasePassword"
-      }
-    },
-    {
-      "id": "tokenSecret",
-      "type": "command",
-      "command": "extension.commandvariable.file.content",
-      "args": {
-        "fileName": "${workspaceFolder}/src/main/resources/secrets.yaml",
-        "yaml": "content.tokenSecret"
-      }
+      "envFile": "${workspaceFolder}/src/main/resources/.env"
     }
   ]
 }

@@ -11,5 +11,4 @@ target/
 .history
 
 ### Sensible data ###
-secrets.yaml
-data.sql
+.env

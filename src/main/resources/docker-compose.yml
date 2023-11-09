@@ -1,0 +1,12 @@
+version: "3.3"
+services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    ports: ["5432:5432"]
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${databasePassword}
