@@ -6,8 +6,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.example.demo.dao.IGenericDao;
 import com.example.demo.exception.GenericException;
 import com.example.demo.model.GenericModel;
@@ -18,8 +16,11 @@ import jakarta.transaction.Transactional;
 public abstract class GenericService<T extends GenericModel, I extends Serializable>
     implements IGenericService<T, I> {
 
-  @Autowired
-  private IGenericDao<T, I> genericDao;
+  private final IGenericDao<T, I> genericDao;
+
+  protected GenericService(IGenericDao<T, I> genericDao) {
+    this.genericDao = genericDao;
+  }
 
   @Override
   @Transactional(rollbackOn = GenericException.class)

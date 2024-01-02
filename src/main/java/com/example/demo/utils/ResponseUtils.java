@@ -7,6 +7,10 @@ import com.example.demo.exception.GenericException;
 
 public class ResponseUtils {
 
+  private ResponseUtils() {
+
+  }
+
   public static <T> ResponseEntity<ResponseObject> getResponseEntity(T t) {
     return getResponseEntityObject(ResponseObject.create(200, t));
   }

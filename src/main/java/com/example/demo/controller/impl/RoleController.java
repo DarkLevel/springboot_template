@@ -9,4 +9,8 @@ import com.example.demo.service.impl.RoleService;
 @RestController
 public class RoleController extends GenericController<RoleModel, RoleService> implements IRoleController {
 
+  public RoleController(RoleService roleService) {
+    super(roleService);
+  }
+
 }

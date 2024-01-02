@@ -3,7 +3,6 @@ package com.example.demo.filter;
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,17 +26,18 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class AuthFilter extends OncePerRequestFilter {
 
-  @Value("${tokenSecret}")
-  private String tokenSecret;
+  private final String tokenSecret;
+  private final HandlerExceptionResolver handlerExceptionResolver;
+  private final TokenService tokenService;
+  private final CustomUserDetailsService userDetailsService;
 
-  @Autowired
-  private HandlerExceptionResolver handlerExceptionResolver;
-
-  @Autowired
-  private TokenService tokenService;
-
-  @Autowired
-  private CustomUserDetailsService userDetailsService;
+  public AuthFilter(@Value("${tokenSecret}") String tokenSecret, HandlerExceptionResolver handlerExceptionResolver,
+      TokenService tokenService, CustomUserDetailsService userDetailsService) {
+    this.tokenSecret = tokenSecret;
+    this.handlerExceptionResolver = handlerExceptionResolver;
+    this.tokenService = tokenService;
+    this.userDetailsService = userDetailsService;
+  }
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

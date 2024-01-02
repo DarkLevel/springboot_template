@@ -2,7 +2,6 @@ package com.example.demo.controller.impl;
 
 import java.util.Collection;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -17,8 +16,11 @@ import com.example.demo.utils.ResponseUtils;
 public abstract class GenericController<T extends GenericModel, S extends GenericService<T, Long>>
     implements IGenericController<T, Long> {
 
-  @Autowired
-  protected S service;
+  private final S service;
+
+  protected GenericController(S service) {
+    this.service = service;
+  }
 
   @Override
   public ResponseEntity<ResponseObject> get(Long id) {

@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +26,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.example.demo.dao.IUserDao;
+import com.example.demo.dao.IUserRoleDao;
 import com.example.demo.enums.OpenEndpoints;
 import com.example.demo.filter.AuthFilter;
 import com.example.demo.service.impl.CustomUserDetailsService;
@@ -46,18 +47,25 @@ import io.swagger.v3.oas.models.servers.Server;
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 public class Config {
 
-  @Value("${openapi.dev-url}")
-  private String devUrl;
+  private final AuthFilter authFilter;
+  private final IUserDao userDao;
+  private final IUserRoleDao userRoleDao;
+  private final String devUrl;
+  private final String prodUrl;
 
-  @Value("${openapi.prod-url}")
-  private String prodUrl;
-
-  @Autowired
-  private AuthFilter authFilter;
+  public Config(AuthFilter authFilter, IUserDao userDao, IUserRoleDao userRoleDao,
+      @Value("${openapi.dev-url}") String devUrl,
+      @Value("${openapi.prod-url}") String prodUrl) {
+    this.authFilter = authFilter;
+    this.userDao = userDao;
+    this.userRoleDao = userRoleDao;
+    this.devUrl = devUrl;
+    this.prodUrl = prodUrl;
+  }
 
   @Bean
   UserDetailsService userDetailsService() {
-    return new CustomUserDetailsService();
+    return new CustomUserDetailsService(userDao, userRoleDao);
   }
 
   @Bean

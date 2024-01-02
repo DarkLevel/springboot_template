@@ -3,9 +3,9 @@ package com.example.demo.service.impl;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dao.IGenericDao;
 import com.example.demo.dao.IUserDao;
 import com.example.demo.exception.GenericException;
 import com.example.demo.filter.AuthUtilities;
@@ -19,11 +19,14 @@ import jakarta.transaction.Transactional;
 @Service
 public class UserService extends GenericService<UserModel, Long> implements IUserService {
 
-  @Autowired
-  private IUserDao userDao;
+  private final IUserDao userDao;
+  private final IUserRoleService userRoleService;
 
-  @Autowired
-  private IUserRoleService userRoleService;
+  public UserService(IGenericDao<UserModel, Long> genericDao, IUserDao userDao, IUserRoleService userRoleService) {
+    super(genericDao);
+    this.userDao = userDao;
+    this.userRoleService = userRoleService;
+  }
 
   @Override
   public UserModel getByUsername(String username) throws GenericException {

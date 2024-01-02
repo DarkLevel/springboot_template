@@ -1,6 +1,5 @@
 package com.example.demo.controller.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,8 +14,12 @@ import com.example.demo.utils.ResponseUtils;
 public class UserController extends GenericController<UserModel, UserService>
     implements IUserController {
 
-  @Autowired
-  protected UserService userService;
+  private final UserService userService;
+
+  public UserController(UserService userService) {
+    super(userService);
+    this.userService = userService;
+  }
 
   @Override
   public ResponseEntity<ResponseObject> get(String username) {

@@ -27,9 +27,9 @@ public class AuthModel {
   private Collection<String> roles;
 
   @JsonProperty(access = Access.READ_ONLY)
-  private AccessTokenModel access_token;
+  private AccessTokenModel accessToken;
 
   @JsonProperty(access = Access.READ_ONLY)
-  private RefreshTokenModel refresh_token;
+  private RefreshTokenModel refreshToken;
 
 }

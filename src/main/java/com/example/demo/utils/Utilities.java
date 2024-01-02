@@ -6,6 +6,10 @@ import java.util.List;
 
 public class Utilities {
 
+  private Utilities() {
+
+  }
+
   public static String formatDateToISO(Date date) {
     return formatDate("yyyy-MM-dd'T'HH:mm:ss.sssXXX", date);
   }

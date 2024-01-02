@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -32,29 +31,28 @@ import jakarta.transaction.Transactional;
 @Service
 public class AuthService implements IAuthService {
 
-  @Value("${tokenSecret}")
-  private String tokenSecret;
+  private final String tokenSecret;
+  private final Long accessTokenExpiration;
+  private final Long refreshTokenExpiration;
+  private final AuthenticationManager authenticationManager;
+  private final TokenService tokenService;
+  private final IUserDao userDao;
+  private final IUserRoleDao userRoleDao;
+  private final IRefreshTokenDao refreshTokenDao;
 
-  @Value("${access_token_expiration}")
-  private Long accessTokenExpiration;
-
-  @Value("${refresh_token_expiration}")
-  private Long refreshTokenExpiration;
-
-  @Autowired
-  private AuthenticationManager authenticationManager;
-
-  @Autowired
-  private TokenService tokenService;
-
-  @Autowired
-  private IUserDao userDao;
-
-  @Autowired
-  private IUserRoleDao userRoleDao;
-
-  @Autowired
-  private IRefreshTokenDao refreshTokenDao;
+  public AuthService(@Value("${tokenSecret}") String tokenSecret,
+      @Value("${access_token_expiration}") Long accessTokenExpiration,
+      @Value("${refresh_token_expiration}") Long refreshTokenExpiration, AuthenticationManager authenticationManager,
+      TokenService tokenService, IUserDao userDao, IUserRoleDao userRoleDao, IRefreshTokenDao refreshTokenDao) {
+    this.tokenSecret = tokenSecret;
+    this.accessTokenExpiration = accessTokenExpiration;
+    this.refreshTokenExpiration = refreshTokenExpiration;
+    this.authenticationManager = authenticationManager;
+    this.tokenService = tokenService;
+    this.userDao = userDao;
+    this.userRoleDao = userRoleDao;
+    this.refreshTokenDao = refreshTokenDao;
+  }
 
   @Override
   public AuthModel getAccessToken(AuthModel authModel) throws GenericException {
@@ -137,10 +135,10 @@ public class AuthService implements IAuthService {
 
       authModel.setUsername(username);
       authModel.setRoles(roles);
-      authModel.setAccess_token(new AccessTokenModel(accessToken,
+      authModel.setAccessToken(new AccessTokenModel(accessToken,
           Utilities.formatDateToISOWithoutMillis(issuedAt),
           Utilities.formatDateToISOWithoutMillis(expiration)));
-      authModel.setRefresh_token(refreshTokenModel != null ? refreshTokenModel : createRefreshToken(username));
+      authModel.setRefreshToken(refreshTokenModel != null ? refreshTokenModel : createRefreshToken(username));
 
       return authModel;
     } catch (Exception e) {

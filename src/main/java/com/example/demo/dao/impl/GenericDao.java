@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.example.demo.dao.IGenericDao;
 import com.example.demo.model.GenericModel;
 import com.example.demo.repository.IGenericRepository;
@@ -13,8 +11,11 @@ import com.example.demo.repository.IGenericRepository;
 public abstract class GenericDao<T extends GenericModel, I extends Serializable>
     implements IGenericDao<T, I> {
 
-  @Autowired
-  private IGenericRepository<T, I> genericRepository;
+  private final IGenericRepository<T, I> genericRepository;
+
+  public GenericDao(IGenericRepository<T, I> genericRepository) {
+    this.genericRepository = genericRepository;
+  }
 
   @Override
   public Optional<T> get(I i) {

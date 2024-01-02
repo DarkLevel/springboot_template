@@ -2,7 +2,6 @@ package com.example.demo.dao.impl;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.dao.IUserDao;
@@ -12,8 +11,12 @@ import com.example.demo.repository.IUserRepository;
 @Component
 public class UserDao extends GenericDao<UserModel, Long> implements IUserDao {
 
-  @Autowired
-  private IUserRepository userRepository;
+  private final IUserRepository userRepository;
+
+  public UserDao(IUserRepository userRepository) {
+    super(userRepository);
+    this.userRepository = userRepository;
+  }
 
   @Override
   public UserModel findByUsername(String username) {

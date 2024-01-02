@@ -7,6 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthUtilities {
 
+  private AuthUtilities() {
+
+  }
+
   public static boolean isAdmin() {
     boolean isAdmin = false;
 
