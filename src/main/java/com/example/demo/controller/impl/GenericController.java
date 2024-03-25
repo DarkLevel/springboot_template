@@ -3,6 +3,7 @@ package com.example.demo.controller.impl;
 import java.util.Collection;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.example.demo.controller.IGenericController;
@@ -23,7 +24,7 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
   }
 
   @Override
-  public ResponseEntity<ResponseObject> get(Long id) {
+  public ResponseEntity<ResponseObject> get(@NonNull Long id) {
     ResponseEntity<ResponseObject> responseEntity;
 
     try {
@@ -49,7 +50,7 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
   }
 
   @Override
-  public ResponseEntity<ResponseObject> create(T t) {
+  public ResponseEntity<ResponseObject> create(@NonNull T t) {
     ResponseEntity<ResponseObject> responseEntity;
 
     try {
@@ -114,7 +115,7 @@ public abstract class GenericController<T extends GenericModel, S extends Generi
   }
 
   @Override
-  public ResponseEntity<ResponseObject> delete(Long id) {
+  public ResponseEntity<ResponseObject> delete(@NonNull Long id) {
     ResponseEntity<ResponseObject> responseEntity;
 
     try {

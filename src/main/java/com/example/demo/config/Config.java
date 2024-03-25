@@ -97,12 +97,13 @@ public class Config {
         .build();
   }
 
+  @SuppressWarnings("null")
   @Bean
   AuditorAware<String> auditorAware() {
     return () -> {
       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-      return Optional
-          .ofNullable(authentication != null && authentication.isAuthenticated() ? authentication.getName() : null);
+      String name = authentication != null && authentication.isAuthenticated() ? authentication.getName() : null;
+      return Optional.ofNullable(name);
     };
   }
 

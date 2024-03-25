@@ -91,7 +91,12 @@ public class AuthService implements IAuthService {
       }
 
       if (refreshTokenModel.getExpiration().compareTo(Instant.now()) < 0) {
-        refreshTokenDao.delete(refreshTokenModel.getId());
+        Long id = refreshTokenModel.getId();
+
+        if (id != null) {
+          refreshTokenDao.delete(id);
+        }
+
         throw new GenericException("The refresh token is not valid", 401);
       }
 
@@ -114,7 +119,12 @@ public class AuthService implements IAuthService {
         throw new GenericException("Token not found", 404);
       }
 
-      refreshTokenDao.delete(refreshTokenModel.getId());
+      Long id = refreshTokenModel.getId();
+
+      if (id != null) {
+        refreshTokenDao.delete(id);
+      }
+
       return 1;
     } catch (Exception e) {
       throw new GenericException(e.getMessage(), e, 400);

@@ -1,10 +1,11 @@
 package com.example.demo.service.impl;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
+
+import org.springframework.lang.NonNull;
 
 import com.example.demo.dao.IGenericDao;
 import com.example.demo.exception.GenericException;
@@ -24,7 +25,7 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
 
   @Override
   @Transactional(rollbackOn = GenericException.class)
-  public Optional<T> get(I i) throws GenericException {
+  public Optional<T> get(@NonNull I i) throws GenericException {
     Optional<T> resultObject;
 
     try {
@@ -52,7 +53,7 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
 
   @Override
   @Transactional(rollbackOn = GenericException.class)
-  public T create(T t) throws GenericException {
+  public T create(@NonNull T t) throws GenericException {
     try {
       return genericDao.save(t);
     } catch (Exception e) {
@@ -104,7 +105,7 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
 
   @Override
   @Transactional(rollbackOn = GenericException.class)
-  public int delete(I i) throws GenericException {
+  public int delete(@NonNull I i) throws GenericException {
     try {
       genericDao.delete(i);
       return 1;
@@ -127,16 +128,7 @@ public abstract class GenericService<T extends GenericModel, I extends Serializa
 
   private Collection<T> changeStatus(Collection<I> lI, boolean enabled) throws GenericException {
     try {
-      Collection<T> lT = new ArrayList<>();
-      Optional<T> t;
-
-      for (I i : lI) {
-        t = genericDao.get(i);
-
-        if (t.isPresent()) {
-          lT.add(t.get());
-        }
-      }
+      Collection<T> lT = genericDao.get(lI);
 
       lT.stream().forEach(el -> el.setEnabled(enabled));
 

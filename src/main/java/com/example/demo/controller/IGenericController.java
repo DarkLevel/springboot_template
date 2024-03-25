@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +36,7 @@ public interface IGenericController<T extends GenericModel, I extends Serializab
       @Content(schema = @Schema(implementation = ResponseObject.class), mediaType = "application/json") })
   @PreAuthorize("hasAnyAuthority('admin','user')")
   @GetMapping("/{id}")
-  public ResponseEntity<ResponseObject> get(@PathVariable(required = true) I i);
+  public ResponseEntity<ResponseObject> get(@NonNull @PathVariable(required = true) I i);
 
   @Operation(summary = "Get list by id", description = "Get an object by specifying their ids as a list of parameters. The expected response object is located inside the data object.")
   @ApiResponse(responseCode = "200", description = "Success", content = {
@@ -61,7 +62,7 @@ public interface IGenericController<T extends GenericModel, I extends Serializab
       @Content(schema = @Schema(implementation = ResponseObject.class), mediaType = "application/json") })
   @PreAuthorize("hasAuthority('admin')")
   @PostMapping
-  public ResponseEntity<ResponseObject> create(@RequestBody(required = true) T t);
+  public ResponseEntity<ResponseObject> create(@NonNull @RequestBody(required = true) T t);
 
   @Operation(summary = "Create list by objects data", description = "Create a list of objects by specifying its data in the request body. The expected response object is located inside the data object.")
   @ApiResponse(responseCode = "200", description = "Success", content = {
@@ -125,7 +126,7 @@ public interface IGenericController<T extends GenericModel, I extends Serializab
       @Content(schema = @Schema(implementation = ResponseObject.class), mediaType = "application/json") })
   @PreAuthorize("hasAuthority('admin')")
   @DeleteMapping("/{id}")
-  public ResponseEntity<ResponseObject> delete(@PathVariable(required = true) I i);
+  public ResponseEntity<ResponseObject> delete(@NonNull @PathVariable(required = true) I i);
 
   @Operation(summary = "Delete list by id", description = "Delete a list of objects by specifying their ids in the request body. The expected response object is located inside the data object.")
   @ApiResponse(responseCode = "200", description = "Success", content = {

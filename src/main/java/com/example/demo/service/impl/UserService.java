@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.IGenericDao;
@@ -50,7 +51,7 @@ public class UserService extends GenericService<UserModel, Long> implements IUse
 
   @Override
   @Transactional(rollbackOn = GenericException.class)
-  public UserModel create(UserModel userModel) throws GenericException {
+  public UserModel create(@NonNull UserModel userModel) throws GenericException {
     try {
       UserModel createdUser = userDao.save(userModel);
       userRoleService.create(new UserRoleModel(createdUser, 2L));
