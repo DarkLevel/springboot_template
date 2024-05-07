@@ -97,7 +97,6 @@ public class Config {
         .build();
   }
 
-  @SuppressWarnings("null")
   @Bean
   AuditorAware<String> auditorAware() {
     return () -> {
